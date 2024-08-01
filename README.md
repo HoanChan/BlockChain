@@ -8,7 +8,7 @@ Dự án này là một bài tập lớn kết thúc học phần "Blockchain v�
 - **Mã số học viên**: 64CH032
 - **Lớp**: CNTT2022
 - **Học phần**: Blockchain và ứng dụng
-- **Giảng viên**: TS. Nguyễn Văn Nam
+- **Giảng viên**: TS. Phạm Văn Nam
 - **Thời gian**: Tháng 8/2024
 
 ## Đặt vấn đề
