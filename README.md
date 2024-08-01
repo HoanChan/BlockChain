@@ -33,3 +33,26 @@ Blockchain có thể được sử dụng để lưu trữ và xác minh thông 
 
 ## Ứng dụng Blockchain trong truy xuất nguồn gốc
 Blockchain có thể được sử dụng để tạo ra một hệ thống truy xuất nguồn gốc sản phẩm hiệu quả và minh bạch, giúp nâng cao niềm tin của người tiêu dùng và cải thiện chất lượng sản phẩm.
+
+
+## Các bước thực hiện cụ thể:
+- Khởi động `CodeSpace` (Đã cấu hình sẵn việc cài đặt `Node.js`, `Truffle` và `Ganache`)
+- Gõ lệnh: `truffle -v` trên terminal để xem các thông tin về phiên bản của Truffle, Ganache, Solidity, Node và Web3.js
+- Gõ lệnh `truffle init` để bắt đầu thiết lập các file, thư mục cơ bản cho dự án
+- Gõ lệnh: `ganache-cli` để khởi động Ganache và xem các thông tin về network và accounts
+- Copy các thông tin về network của Ganache vào file cấu hình `truffle-config.js`
+
+```json
+module.exports = {
+  networks: {
+     development: {
+     host: "127.0.0.1",     // Localhost (default: none)
+     port: 8545,            // Standard Ethereum port (default: none)
+     network_id: "*",       // Any network (default: none)
+    }
+  }
+}
+```
+
+- Gõ lệnh `truffle compile` để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts trong thư mục `build\contracts`
+
