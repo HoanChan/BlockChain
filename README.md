@@ -39,8 +39,8 @@ Blockchain có thể được sử dụng để tạo ra một hệ thống truy
 - Khởi động `CodeSpace` (Đã cấu hình sẵn việc cài đặt `Node.js`)
 - Các gói thư viện cần thiết cho dự án được cấu hình tại file `package.json` cũng được tự động cài đặt cùng với việc khởi tạo `codespace` nhờ lệnh `npm install` trong file `.devcontainer/devcontainer.json`. Nếu cần cập nhật các goi thư viện mới thì nhớ chạy lệnh `npm install` trên terminal
 - Gõ lệnh: `npx truffle -v` trên terminal để xem các thông tin về phiên bản của `Truffle`, `Ganache`, `Solidity`, `Node` và `Web3.js`
-- Gõ lệnh `npx truffle init` để bắt đầu thiết lập các file, thư mục cơ bản cho dự án
-- Gõ lệnh: `npx ganache-cli` để khởi động Ganache và xem các thông tin về network và accounts
+- Gõ lệnh `npx truffle init` trên terminal để bắt đầu thiết lập các file, thư mục cơ bản cho dự án
+- Gõ lệnh: `npx ganache-cli` trên terminal để khởi động Ganache và xem các thông tin về network và accounts
 - Copy các thông tin về network của Ganache vào file cấu hình `truffle-config.js`
 
 ```json
@@ -55,6 +55,7 @@ module.exports = {
 }
 ```
 
-- Gõ lệnh `npx truffle compile` để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts`
+- Gõ lệnh `npx truffle compile` trên terminal để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts`
 - Tạo file `index.js` chứa thông tin máy chủ node.js
 - Tạo file `main.html` và các file khác để dựng giao diện ứng dụng
+- Gõ lệnh: `npm run start` trên terminal hoặc nhấn `Ctrl + Shift + B` để chạy ứng dụng
