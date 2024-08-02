@@ -1,596 +1,116 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BLOCKMEMO</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"
-    ></script>
-    <!-- Sử dụng Bootstrap 5.1.3 CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <!-- Thanh menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">BLOCKMEMO</a>
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Quản lý người dùng</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Đăng nhập</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
 
-    <div class="container mt-5">
-      <h1 class="text-center">Danh sách Sản phẩm</h1>
-      <p>
-        <button id="conn" onclick="Conn2BC()">
-          Kết nối đến mạng blockchain
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLOCKMEMO</title>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+  <!-- Sử dụng Bootstrap 5.1.3 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <!-- Thanh menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">BLOCKMEMO</a>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Quản lý người dùng</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Đăng nhập</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Danh sách Sản phẩm</h1>
+    <div class="text-center p-2">
+      <button class="btn btn-danger" id="conn" onclick="Conn2BC()"> Kết nối đến mạng blockchain </button>
+    </div>
+    <div class="mb-3">
+      <div class="input-group">
+        <!-- Ô tìm kiếm -->
+        <input type="text" class="form-control" id="search-id" placeholder="Tìm theo ID..." />
+        <input type="text" class="form-control" id="search-name" placeholder="Tìm theo Tên..." />
+        <input type="text" class="form-control" id="search-manufacturer" placeholder="Tìm theo Nhà sản xuất..." />
+        <input type="text" class="form-control" id="search-type" placeholder="Tìm theo Loại sản phẩm..." />
+        <input type="text" class="form-control" id="search-status" placeholder="Tìm theo Trạng thái..." />
+        <button class="btn btn-primary" onclick="searchProducts()">
+          Tìm kiếm
         </button>
-      </p>
-      <div class="mb-3">
-        <div class="input-group">
-          <!-- Ô tìm kiếm -->
-          <input
-            type="text"
-            class="form-control"
-            id="search-id"
-            placeholder="Tìm theo ID..."
-          />
-          <input
-            type="text"
-            class="form-control"
-            id="search-name"
-            placeholder="Tìm theo Tên..."
-          />
-          <input
-            type="text"
-            class="form-control"
-            id="search-manufacturer"
-            placeholder="Tìm theo Nhà sản xuất..."
-          />
-          <input
-            type="text"
-            class="form-control"
-            id="search-type"
-            placeholder="Tìm theo Loại sản phẩm..."
-          />
-          <input
-            type="text"
-            class="form-control"
-            id="search-status"
-            placeholder="Tìm theo Trạng thái..."
-          />
-          <button
-            class="btn btn-primary"
-            type="button"
-            onclick="searchProducts()"
-          >
-            Tìm kiếm
-          </button>
-        </div>
-      </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tên sản phẩm</th>
-            <th>Nhà sản xuất</th>
-            <th>Loại sản phẩm</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody id="product-list"></tbody>
-      </table>
-      <!-- Nút thêm mới sản phẩm -->
-      <div class="text-center">
-        <button class="btn btn-success">Thêm mới sản phẩm</button>
       </div>
     </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên sản phẩm</th>
+          <th>Nhà sản xuất</th>
+          <th>Loại sản phẩm</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="product-list"></tbody>
+    </table>
+    <!-- Nút thêm mới sản phẩm -->
+    <div class="text-center">
+      <button class="btn btn-success">Thêm mới sản phẩm</button>
+    </div>
+  </div>
 
-    <!-- Sử dụng Bootstrap 5.1.3 JS và Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
-    <script>
-      const Conn2BC = async () => {
-        if (typeof window.ethereum !== "undefined") {
-          try {
-            const accounts = await ethereum.request({
-              method: "eth_requestAccounts",
-            });
-            account = accounts[0];
-            const ABI = [
-              {
-                inputs: [],
-                stateMutability: "nonpayable",
-                type: "constructor",
-              },
-              {
-                anonymous: false,
-                inputs: [
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "idSanPham",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "tenTrangThai",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "thoiGian",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "diaDiem",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "loaiTrangThai",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "moTaChiTiet",
-                    type: "string",
-                  },
-                ],
-                name: "CapNhatTrangThai",
-                type: "event",
-              },
-              {
-                anonymous: false,
-                inputs: [
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "idSanPham",
-                    type: "string",
-                  },
-                  {
-                    indexed: false,
-                    internalType: "string",
-                    name: "tenSanPham",
-                    type: "string",
-                  },
-                ],
-                name: "SanPhamDaTao",
-                type: "event",
-              },
-              {
-                anonymous: false,
-                inputs: [
-                  {
-                    indexed: false,
-                    internalType: "address",
-                    name: "nguoiBiThuHoi",
-                    type: "address",
-                  },
-                ],
-                name: "ThuHoiUyQuyen",
-                type: "event",
-              },
-              {
-                anonymous: false,
-                inputs: [
-                  {
-                    indexed: false,
-                    internalType: "address",
-                    name: "nguoiDuocUyQuyen",
-                    type: "address",
-                  },
-                ],
-                name: "UyQuyen",
-                type: "event",
-              },
-              {
-                inputs: [],
-                name: "chuSoHuu",
-                outputs: [
-                  {
-                    internalType: "address",
-                    name: "",
-                    type: "address",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "uint256",
-                    name: "",
-                    type: "uint256",
-                  },
-                ],
-                name: "danhSachNguoiUyQuyen",
-                outputs: [
-                  {
-                    internalType: "address",
-                    name: "",
-                    type: "address",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "",
-                    type: "string",
-                  },
-                ],
-                name: "danhSachSanPham",
-                outputs: [
-                  {
-                    internalType: "string",
-                    name: "id",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "ten",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "nhaSanXuat",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "loaiSanPham",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "kichThuoc",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "trongLuong",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "hanSuDung",
-                    type: "string",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "",
-                    type: "string",
-                  },
-                  {
-                    internalType: "uint256",
-                    name: "",
-                    type: "uint256",
-                  },
-                ],
-                name: "lichSuTrangThaiSanPham",
-                outputs: [
-                  {
-                    internalType: "string",
-                    name: "ten",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "thoiGian",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "diaDiem",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "loaiTrangThai",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "moTaChiTiet",
-                    type: "string",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "",
-                    type: "string",
-                  },
-                ],
-                name: "maSoSanPhamDaTonTai",
-                outputs: [
-                  {
-                    internalType: "bool",
-                    name: "",
-                    type: "bool",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "id",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "ten",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "nhaSanXuat",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "loaiSanPham",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "kichThuoc",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "trongLuong",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "hanSuDung",
-                    type: "string",
-                  },
-                ],
-                name: "taoSanPham",
-                outputs: [],
-                stateMutability: "nonpayable",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "idSanPham",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "tenTrangThai",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "thoiGian",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "diaDiem",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "loaiTrangThai",
-                    type: "string",
-                  },
-                  {
-                    internalType: "string",
-                    name: "moTaChiTiet",
-                    type: "string",
-                  },
-                ],
-                name: "capNhatTrangThai",
-                outputs: [],
-                stateMutability: "nonpayable",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "string",
-                    name: "idSanPham",
-                    type: "string",
-                  },
-                ],
-                name: "xemLichSuTrangThaiSanPham",
-                outputs: [
-                  {
-                    components: [
-                      {
-                        internalType: "string",
-                        name: "ten",
-                        type: "string",
-                      },
-                      {
-                        internalType: "string",
-                        name: "thoiGian",
-                        type: "string",
-                      },
-                      {
-                        internalType: "string",
-                        name: "diaDiem",
-                        type: "string",
-                      },
-                      {
-                        internalType: "string",
-                        name: "loaiTrangThai",
-                        type: "string",
-                      },
-                      {
-                        internalType: "string",
-                        name: "moTaChiTiet",
-                        type: "string",
-                      },
-                    ],
-                    internalType: "struct TheoDoiSanPham.TrangThai[]",
-                    name: "",
-                    type: "tuple[]",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "address",
-                    name: "_nguoiUyQuyen",
-                    type: "address",
-                  },
-                ],
-                name: "uyQuyen",
-                outputs: [],
-                stateMutability: "nonpayable",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "address",
-                    name: "_nguoiBiThuHoi",
-                    type: "address",
-                  },
-                ],
-                name: "thuHoiUyQuyen",
-                outputs: [],
-                stateMutability: "nonpayable",
-                type: "function",
-              },
-              {
-                inputs: [],
-                name: "XemDanhSachNguoiUyQuyen",
-                outputs: [
-                  {
-                    internalType: "address[]",
-                    name: "",
-                    type: "address[]",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-              {
-                inputs: [
-                  {
-                    internalType: "address",
-                    name: "_address",
-                    type: "address",
-                  },
-                ],
-                name: "laNguoiUyQuyen",
-                outputs: [
-                  {
-                    internalType: "bool",
-                    name: "",
-                    type: "bool",
-                  },
-                ],
-                stateMutability: "view",
-                type: "function",
-              },
-            ];
-            const Address = "0x6E888cc48eE971698a218e2E0CD7C7e4de29dd53";
-            window.web3 = new Web3(window.ethereum);
-            window.contract = new window.web3.eth.Contract(ABI, Address);
-            document.getElementById("conn").innerHTML =
-              "Kết nối đến mạng blockchain: thành công";
-          } catch (error) {
-            document.getElementById("conn").innerHTML =
-              "Lỗi khi kết nối đến MetaMask.";
-            console.error(error);
-          }
-        } else {
-          document.getElementById("conn").innerHTML =
-            "Vui lòng cài đặt MetaMask.";
-        }
-      };
-      // Danh sách sản phẩm mẫu
-      const sampleProducts = [
-        {
-          id: "NS-20230001",
-          name: "Nông sản tươi",
-          manufacturer: "Công ty nông sản ABC",
-          type: "Nông sản",
-          status: "Đang sản xuất",
-        },
-        {
-          id: "MM-20230002",
-          name: "Máy móc xây dựng",
-          manufacturer: "Công ty máy móc XYZ",
-          type: "Máy móc",
-          status: "Đang vận chuyển",
-        },
-        {
-          id: "HH-20230003",
-          name: "Hàng hoá tiêu dùng",
-          manufacturer: "Công ty hàng tiêu dùng",
-          type: "Tiêu dùng",
-          status: "Đang bày bán",
-        },
-        {
-          id: "NS-20230004",
-          name: "Nông sản khô",
-          manufacturer: "Công ty nông sản ABC",
-          type: "Nông sản",
-          status: "Đã bán",
-        },
-        {
-          id: "MM-20230005",
-          name: "Máy móc nông nghiệp",
-          manufacturer: "Công ty máy móc XYZ",
-          type: "Máy móc",
-          status: "Đang sản xuất",
-        },
-      ];
+  <!-- Sử dụng Bootstrap 5.1.3 JS và Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="/js/base.js"></script>
+  <script>
+    // Danh sách sản phẩm mẫu
+    const sampleProducts = [
+      {
+        id: "NS-20230001",
+        name: "Nông sản tươi",
+        manufacturer: "Công ty nông sản ABC",
+        type: "Nông sản",
+        status: "Đang sản xuất",
+      },
+      {
+        id: "MM-20230002",
+        name: "Máy móc xây dựng",
+        manufacturer: "Công ty máy móc XYZ",
+        type: "Máy móc",
+        status: "Đang vận chuyển",
+      },
+      {
+        id: "HH-20230003",
+        name: "Hàng hoá tiêu dùng",
+        manufacturer: "Công ty hàng tiêu dùng",
+        type: "Tiêu dùng",
+        status: "Đang bày bán",
+      },
+      {
+        id: "NS-20230004",
+        name: "Nông sản khô",
+        manufacturer: "Công ty nông sản ABC",
+        type: "Nông sản",
+        status: "Đã bán",
+      },
+      {
+        id: "MM-20230005",
+        name: "Máy móc nông nghiệp",
+        manufacturer: "Công ty máy móc XYZ",
+        type: "Máy móc",
+        status: "Đang sản xuất",
+      },
+    ];
 
-      // Hiển thị sản phẩm mẫu
-      const productList = document.getElementById("product-list");
-      sampleProducts.forEach((product) => {
-        productList.innerHTML += `
+    // Hiển thị sản phẩm mẫu
+    const productList = document.getElementById("product-list");
+    sampleProducts.forEach((product) => {
+      productList.innerHTML += `
         <tr>
           <td>${product.id}</td>
           <td>${product.name}</td>
@@ -603,41 +123,41 @@
           </td>
         </tr>
       `;
+    });
+
+    // Hàm tìm kiếm sản phẩm
+    function searchProducts() {
+      const searchId = document
+        .getElementById("search-id")
+        .value.toLowerCase();
+      const searchName = document
+        .getElementById("search-name")
+        .value.toLowerCase();
+      const searchManufacturer = document
+        .getElementById("search-manufacturer")
+        .value.toLowerCase();
+      const searchType = document
+        .getElementById("search-type")
+        .value.toLowerCase();
+      const searchStatus = document
+        .getElementById("search-status")
+        .value.toLowerCase();
+
+      const filteredProducts = sampleProducts.filter((product) => {
+        return (
+          product.id.toLowerCase().includes(searchId) &&
+          product.name.toLowerCase().includes(searchName) &&
+          product.manufacturer.toLowerCase().includes(searchManufacturer) &&
+          product.type.toLowerCase().includes(searchType) &&
+          product.status.toLowerCase().includes(searchStatus)
+        );
       });
 
-      // Hàm tìm kiếm sản phẩm
-      function searchProducts() {
-        const searchId = document
-          .getElementById("search-id")
-          .value.toLowerCase();
-        const searchName = document
-          .getElementById("search-name")
-          .value.toLowerCase();
-        const searchManufacturer = document
-          .getElementById("search-manufacturer")
-          .value.toLowerCase();
-        const searchType = document
-          .getElementById("search-type")
-          .value.toLowerCase();
-        const searchStatus = document
-          .getElementById("search-status")
-          .value.toLowerCase();
-
-        const filteredProducts = sampleProducts.filter((product) => {
-          return (
-            product.id.toLowerCase().includes(searchId) &&
-            product.name.toLowerCase().includes(searchName) &&
-            product.manufacturer.toLowerCase().includes(searchManufacturer) &&
-            product.type.toLowerCase().includes(searchType) &&
-            product.status.toLowerCase().includes(searchStatus)
-          );
-        });
-
-        // Hiển thị kết quả tìm kiếm
-        const searchResult = document.getElementById("product-list");
-        searchResult.innerHTML = "";
-        filteredProducts.forEach((product) => {
-          searchResult.innerHTML += `
+      // Hiển thị kết quả tìm kiếm
+      const searchResult = document.getElementById("product-list");
+      searchResult.innerHTML = "";
+      filteredProducts.forEach((product) => {
+        searchResult.innerHTML += `
           <tr>
             <td>${product.id}</td>
             <td>${product.name}</td>
@@ -650,8 +170,9 @@
             </td>
           </tr>
         `;
-        });
-      }
-    </script>
-  </body>
+      });
+    }
+  </script>
+</body>
+
 </html>
