@@ -57,5 +57,56 @@ module.exports = {
 
 - Gõ lệnh `npx truffle compile` trên terminal để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts`
 - Tạo file `index.js` chứa thông tin máy chủ node.js
-- Tạo file `main.html` và các file khác để dựng giao diện ứng dụng
-- Gõ lệnh: `npm run start` trên terminal hoặc nhấn `Ctrl + Shift + B` để chạy ứng dụng
+
+```javascript
+const express = require("express");
+const path = require("path");
+const app = express();
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname + "/src/main.html"));
+})
+
+const server = app.listen(5000);
+const portNumber = server.address().port;
+console.log(`port is open on ${portNumber}`);
+```
+
+- Tạo file `main.html` trong thư mục `src` và các file khác để dựng giao diện ứng dụng. 
+- Nếu cần sử dụng web3 thì thêm thư viện vào:
+
+```html
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+```
+- Thêm nút vào HTML:
+
+```html
+<button id="conn" onclick="Conn2BC()">Kết nối đến mạng blockchain</button>
+```
+
+- Viết mã js để kết nối tới mạng BlockChain:
+
+```javascript
+const Conn2BC = async () => {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                account = accounts[0];
+                const ABI = [ ... ];
+                const Address = "...";
+                window.web3 = new Web3(window.ethereum);
+                window.contract = new window.web3.eth.Contract(ABI, Address);
+                document.getElementById("conn").innerHTML = "Kết nối đến mạng blockchain: thành công";
+            } catch (error) {
+                document.getElementById("conn").innerHTML = "Lỗi khi kết nối đến MetaMask.";
+                console.error(error);
+            }
+        } else {
+            document.getElementById("conn").innerHTML = "Vui lòng cài đặt MetaMask.";
+        }
+    }
+```
+
+`ABI` được copy từ file `.json` khi compile bằng Truffle và `Address` là địa chỉ của tài khoản ví (Public key)
+- Để `web3` hoạt động được cần cài đặt `Meta Mask`, khai báo máy chủ `Ganache` ở phần `Networks` trong mục cấu hình đồng thời thêm tài khoản ví vào (1 tài khoản được Ganache tạo sẵn khi khởi động máy chủ)
+- Gõ lệnh: `npm run start` trên terminal hoặc nhấn `Ctrl + Shift + B` để chạy ứng dụng.
