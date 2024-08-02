@@ -43,7 +43,7 @@ Blockchain có thể được sử dụng để tạo ra một hệ thống truy
 - Gõ lệnh: `npx ganache-cli` trên terminal để khởi động Ganache và xem các thông tin về network và accounts
 - Copy các thông tin về network của Ganache vào file cấu hình `truffle-config.js`
 
-```json
+```javascript
 module.exports = {
   networks: {
      development: {
@@ -107,6 +107,6 @@ const Conn2BC = async () => {
     }
 ```
 
-`ABI` được copy từ file `.json` khi compile bằng Truffle và `Address` là địa chỉ của tài khoản ví (Public key)
-- Để `web3` hoạt động được cần cài đặt `Meta Mask`, khai báo máy chủ `Ganache` ở phần `Networks` trong mục cấu hình đồng thời thêm tài khoản ví vào (1 tài khoản được Ganache tạo sẵn khi khởi động máy chủ)
+`ABI` được copy từ file `.json` khi compile bằng `Truffle` và `Address` là địa chỉ của tài khoản ví (Public key)
+- Để `web3` hoạt động được cần cài đặt `MetaMask` 🡒 vào phần cài đặt 🡒 thêm máy chủ `Ganache` ở mục `Networks` 🡒 thêm tài khoản ví (1 trong các tài khoản - Private key được `Ganache` tạo sẵn khi khởi động máy chủ)
 - Gõ lệnh: `npm run start` trên terminal hoặc nhấn `Ctrl + Shift + B` để chạy ứng dụng.
