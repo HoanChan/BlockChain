@@ -23,5 +23,16 @@
 				"isDefault": false
 			}
 		},
+		{
+			"type": "shell",
+			"command": "npx truffle compile",
+			"problemMatcher": [],
+			"label": "Compile contracts",
+			"detail": "npx truffle compile",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
 	]
 }

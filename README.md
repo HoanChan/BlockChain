@@ -117,7 +117,8 @@ console.log(`port is open on ${portNumber}`);
         }
     };
     ```
-    `ABI` được tự động đọc vào từ file `.json` được tạo lúc compile bằng `Truffle` và `Address` là địa chỉ của tài khoản ví (Public key được `Ganache` tạo sẵn khi khởi động máy chủ)
+    `ABI` được tự động đọc vào từ file `.json` được tạo lúc compile bằng `Truffle` <br>
+    `Address` là địa chỉ của tài khoản ví (Public key được `Ganache` tạo sẵn khi khởi động máy chủ)
     - Thêm `base.js` vào `main.html`:
     ```html
     <script src="/js/base.js"></script>
@@ -130,6 +131,7 @@ console.log(`port is open on ${portNumber}`);
         - ID mặc định là `1337` (xem ở terminal chạy `Ganache`)
     - Thêm tài khoản ví (1 trong các tài khoản - Private key được `Ganache` tạo sẵn khi khởi động máy chủ)
 9. Chạy ứng dụng:
+    - Đảm bảo contract đã được compile (Gõ lệnh `npx truffle compile` nếu cần compile lại )
     - Đảm bảo máy chủ `Ganache` đã hoạt động (Gõ lệnh `npx ganache-cli` nếu cần chạy lại)
     - Gõ lệnh: `npm run start` trên terminal.
-    - Hai lệnh này đều được cấu hình ở `.vscode/tasks.json` nên có thể nhấn `Ctrl + Shift + B` và chọn lệnh để thực hiện.
+    - Cả 3 lệnh trên đều được cấu hình ở `.vscode/tasks.json` nên có thể nhấn `Ctrl + Shift + B` và chọn lệnh để thực hiện.
