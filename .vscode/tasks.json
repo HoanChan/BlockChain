@@ -5,12 +5,23 @@
 			"type": "npm",
 			"script": "start",
 			"problemMatcher": [],
-			"label": "npm: start",
+			"label": "Start app",
 			"detail": "npm run start",
 			"group": {
 				"kind": "build",
-				"isDefault": true
+				"isDefault": false
 			}
-		}
+		},
+		{
+			"type": "shell",
+			"command": "npx ganache-cli",
+			"problemMatcher": [],
+			"label": "Run Ganache",
+			"detail": "npx ganache-cli",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
 	]
 }

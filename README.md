@@ -131,4 +131,5 @@ console.log(`port is open on ${portNumber}`);
     - Thêm tài khoản ví (1 trong các tài khoản - Private key được `Ganache` tạo sẵn khi khởi động máy chủ)
 9. Chạy ứng dụng:
     - Đảm bảo máy chủ `Ganache` đã hoạt động (Gõ lệnh `npx ganache-cli` nếu cần chạy lại)
-    - Gõ lệnh: `npm run start` trên terminal hoặc nhấn `Ctrl + Shift + B` để chạy web.
+    - Gõ lệnh: `npm run start` trên terminal.
+    - Hai lệnh này đều được cấu hình ở `.vscode/tasks.json` nên có thể nhấn `Ctrl + Shift + B` và chọn lệnh để thực hiện.
