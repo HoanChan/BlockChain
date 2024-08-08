@@ -118,3 +118,6 @@ temp/
 
 # Vite
 .vite/
+
+# Blockchain Database
+database/
