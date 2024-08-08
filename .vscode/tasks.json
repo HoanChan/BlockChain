@@ -14,7 +14,7 @@
 		},
 		{
 			"type": "shell",
-			"command": "npx ganache-cli",
+			"command": "npx ganache-cli --account \"0xa27d7934c86a4fa7d338d633cb33f100a871aa1e985177ac1434a76ab37a7a7c,1000000000000000000000\" --account \"0xff94674bde28731b78d6ba622b35ba7282d62b9eb5c653ccef04adc5160a52da,1000000000000000000000\" --db \"/workspaces/BlockChain/database\"",
 			"problemMatcher": [],
 			"label": "Run Ganache",
 			"detail": "npx ganache-cli",
