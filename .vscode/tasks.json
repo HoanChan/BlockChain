@@ -25,10 +25,10 @@
 		},
 		{
 			"type": "shell",
-			"command": "npx truffle compile",
+			"command": "npx truffle migrate --network development",
 			"problemMatcher": [],
-			"label": "Compile contracts",
-			"detail": "npx truffle compile",
+			"label": "Compile and Deploy contracts",
+			"detail": "npx truffle migrate",
 			"group": {
 				"kind": "build",
 				"isDefault": false
