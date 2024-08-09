@@ -29,7 +29,9 @@
   <div class="container mt-5">
     <h1 class="text-center">Danh sách Sản phẩm</h1>
     <div class="text-center p-2">
-      <button class="btn btn-danger" id="conn" onclick="Conn2BC()"> Kết nối đến mạng blockchain </button>
+      <button class="btn btn-danger" id="conn" onclick="Conn2BC()">
+        Kết nối đến mạng blockchain
+      </button>
     </div>
     <div class="mb-3">
       <div class="input-group">
@@ -59,12 +61,15 @@
     </table>
     <!-- Nút thêm mới sản phẩm -->
     <div class="text-center">
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#diagThemSP">Thêm mới sản phẩm</button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#diagThemSP">
+        Thêm mới sản phẩm
+      </button>
     </div>
   </div>
 
   <!-- Modal THêm sản phẩm-->
-  <div class="modal fade" id="diagThemSP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="diagThemSPLabel" aria-hidden="true">
+  <div class="modal fade" id="diagThemSP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="diagThemSPLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -74,15 +79,15 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="tenSanPham">Tên sản phẩm</label>
-            <input type="text" class="form-control" id="tenSanPham" name="tenSanPham" required>
+            <input type="text" class="form-control" id="tenSanPham" name="tenSanPham" required />
           </div>
           <div class="form-group">
             <label for="idSanPham">Mã sản phẩm</label>
-            <input type="text" class="form-control" id="idSanPham" name="idSanPham" required>
+            <input type="text" class="form-control" id="idSanPham" name="idSanPham" required />
           </div>
           <div class="form-group">
             <label for="nhaSanXuat">Nhà sản xuất</label>
-            <input type="text" class="form-control" id="nhaSanXuat" name="nhaSanXuat" required>
+            <input type="text" class="form-control" id="nhaSanXuat" name="nhaSanXuat" required />
           </div>
           <div class="form-group">
             <label for="loaiSanPham">Loại sản phẩm</label>
@@ -95,36 +100,39 @@
           </div>
           <div class="form-group">
             <label for="kichThuoc">Kích thước</label>
-            <input type="text" class="form-control" id="kichThuoc" name="kichThuoc" required>
+            <input type="text" class="form-control" id="kichThuoc" name="kichThuoc" required />
           </div>
           <div class="form-group">
             <label for="trongLuong">Trọng lượng</label>
-            <input type="number" class="form-control" id="trongLuong" name="trongLuong" required>
+            <input type="number" class="form-control" id="trongLuong" name="trongLuong" required />
           </div>
           <div class="form-group">
             <label for="hanSuDung">Ngày hết hạn</label>
-            <input type="date" class="form-control" id="hanSuDung" name="hanSuDung" required value="2025-03-27">
+            <input type="date" class="form-control" id="hanSuDung" name="hanSuDung" required value="2025-03-27" />
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnThemSP" onclick="taoSanPham()">Thêm mới</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnThemSP" onclick="taoSanPham()">
+            Thêm mới
+          </button>
         </div>
       </div>
     </div>
   </div>
   <!-- Modal Hiển thị log-->
-  <div class="modal fade" id="diagLog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="diagLogLabel" aria-hidden="true">
+  <div class="modal fade" id="diagLog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="diagLogLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="diagLogLabel">Nhật ký hoạt động</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" id="diagLogBody">
-          
-        </div>
+        <div class="modal-body" id="diagLogBody"></div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Close
+          </button>
         </div>
       </div>
     </div>
@@ -134,112 +142,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
   <script src="/js/base.js"></script>
-  <script>
-    // Danh sách sản phẩm mẫu
-    const sampleProducts = [
-      {
-        id: "NS-20230001",
-        name: "Nông sản tươi",
-        manufacturer: "Công ty nông sản ABC",
-        type: "Nông sản",
-        status: "Đang sản xuất",
-      },
-      {
-        id: "MM-20230002",
-        name: "Máy móc xây dựng",
-        manufacturer: "Công ty máy móc XYZ",
-        type: "Máy móc",
-        status: "Đang vận chuyển",
-      },
-      {
-        id: "HH-20230003",
-        name: "Hàng hoá tiêu dùng",
-        manufacturer: "Công ty hàng tiêu dùng",
-        type: "Tiêu dùng",
-        status: "Đang bày bán",
-      },
-      {
-        id: "NS-20230004",
-        name: "Nông sản khô",
-        manufacturer: "Công ty nông sản ABC",
-        type: "Nông sản",
-        status: "Đã bán",
-      },
-      {
-        id: "MM-20230005",
-        name: "Máy móc nông nghiệp",
-        manufacturer: "Công ty máy móc XYZ",
-        type: "Máy móc",
-        status: "Đang sản xuất",
-      },
-    ];
-
-    // Hiển thị sản phẩm mẫu
-    const productList = document.getElementById("product-list");
-    sampleProducts.forEach((product) => {
-      productList.innerHTML += `
-        <tr>
-          <td>${product.id}</td>
-          <td>${product.name}</td>
-          <td>${product.manufacturer}</td>
-          <td>${product.type}</td>
-          <td>${product.status}</td>
-          <td>
-            <a href="#" class="btn btn-info">Xem</a>
-            <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
-          </td>
-        </tr>
-      `;
-    });
-
-    // Hàm tìm kiếm sản phẩm
-    function searchProducts() {
-      const searchId = document
-        .getElementById("search-id")
-        .value.toLowerCase();
-      const searchName = document
-        .getElementById("search-name")
-        .value.toLowerCase();
-      const searchManufacturer = document
-        .getElementById("search-manufacturer")
-        .value.toLowerCase();
-      const searchType = document
-        .getElementById("search-type")
-        .value.toLowerCase();
-      const searchStatus = document
-        .getElementById("search-status")
-        .value.toLowerCase();
-
-      const filteredProducts = sampleProducts.filter((product) => {
-        return (
-          product.id.toLowerCase().includes(searchId) &&
-          product.name.toLowerCase().includes(searchName) &&
-          product.manufacturer.toLowerCase().includes(searchManufacturer) &&
-          product.type.toLowerCase().includes(searchType) &&
-          product.status.toLowerCase().includes(searchStatus)
-        );
-      });
-
-      // Hiển thị kết quả tìm kiếm
-      const searchResult = document.getElementById("product-list");
-      searchResult.innerHTML = "";
-      filteredProducts.forEach((product) => {
-        searchResult.innerHTML += `
-          <tr>
-            <td>${product.id}</td>
-            <td>${product.name}</td>
-            <td>${product.manufacturer}</td>
-            <td>${product.type}</td>
-            <td>${product.status}</td>
-            <td>
-              <a href="#" class="btn btn-info">Xem</a>
-              <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
-            </td>
-          </tr>
-        `;
-      });
-    }
-  </script>
 </body>
 
 </html>

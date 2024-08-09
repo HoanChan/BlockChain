@@ -34,27 +34,27 @@ const diagLogModalBody = document.getElementById('diagLogBody');
 function showLog(logContent) {
     // Lấy thời gian hiện tại
     const currentTime = new Date().toLocaleString();
-  
+
     // Tạo phần tử div để chứa log
     const logElement = document.createElement('div');
     logElement.classList.add('log-entry');
-  
+
     // Tạo nội dung log
     logElement.innerHTML = `
       <hr>
       <div class="log-time">${currentTime}</div>
       <div class="log-content">${logContent}</div>
     `;
-  
+
     // Lấy phần tử body của modal
-  
+
     // Thêm log vào body của modal
     diagLogModalBody.appendChild(logElement);
-  
+
     // Hiển thị modal
     const diagLogModal = new bootstrap.Modal(document.getElementById('diagLog'));
     diagLogModal.show();
-  }
+}
 
 async function readABIFromURL(url) {
     try {
@@ -74,11 +74,12 @@ const Conn2BC = async () => {
                 method: "eth_requestAccounts",
             });
             window.account = accounts[0];
-            const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json");
-            const Address = "0x0d196dF21510444C4b4834131Fe4F34F6d7875C9";
+            const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json"); // Đường dẫn tới file .json của smart contract đã compile
+            const Address = "0x20a68628cb5c568013fdb549451563159994766c"; // Địa chỉ của smart contract
             window.web3 = new Web3(window.ethereum);
             window.contract = new window.web3.eth.Contract(ABI, Address);
             document.getElementById("conn").innerHTML = "Đã kết nối với mạng Blockchain.";
+            layDanhSachSanPham();
         } catch (error) {
             document.getElementById("conn").innerHTML = "Có lỗi xảy ra khi kết nối với MetaMask.";
             console.error(error);
@@ -103,11 +104,11 @@ async function taoSanPham() {
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Sản phẩm đã được tạo:', receipt);
-            showLog('<h4>Sản phẩm đã được tạo</h4><p>' + jsonToHtml(receipt)) + '</p>';
+            showLog(`<h4>Sản phẩm đã được tạo</h4><p>${jsonToHtml(receipt)}</p>`);
         })
         .on('error', function (error) {
             console.error('Đã xảy ra lỗi:', error);
-            showLog('<h4>Đã xảy ra lỗi khi tạo sản phẩm</h4><p>' + jsonToHtml(error)) + '</p>';
+            showLog(`<h4>Đã xảy ra lỗi khi tạo sản phẩm</h4><p>${error}</p>`);
         });
 }
 
@@ -124,11 +125,11 @@ async function capNhatTrangThai() {
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Trạng thái đã được cập nhật:', receipt);
-            showLog('<h4>Trạng thái đã được cập nhật</h4><p>' + jsonToHtml(receipt)) + '</p>';
+            showLog(`<h4>Trạng thái đã được cập nhật</h4><p>${jsonToHtml(receipt)}</p>`);
         })
         .on('error', function (error) {
             console.error('Đã xảy ra lỗi:', error);
-            showLog('<h4>Đã xảy ra lỗi khi cập nhật trạng thái</h4><p>' + jsonToHtml(error)) + '</p>';
+            showLog(`<h4>Đã xảy ra lỗi khi cập nhật trạng thái</h4><p>${error}</p>`);
         });
 }
 
@@ -158,37 +159,130 @@ async function xemLichSuTrangThaiSanPham() {
         })
         .catch(function (error) {
             console.error('Đã xảy ra lỗi:', error);
-            showLog('<h4>Đã xảy ra lỗi khi xem lịch sử trạng thái</h4><p>' + jsonToHtml(error)) + '</p>';
+            showLog(`<h4>Đã xảy ra lỗi khi xem lịch sử trạng thái</h4><p>${error}</p>`);
         });
 }
-
+const productList = document.getElementById("product-list");
+function createProductItem(product){
+    return `
+        <tr>
+          <td>${product.id}</td>
+          <td>${product.ten}</td>
+          <td>${product.nhaSanXuat}</td>
+          <td>${product.loaiSanPham}</td>
+          <td>${product.kichThuoc}</td>
+          <td>${product.trongLuong}</td>
+          <td>${product.hanSuDung}</td>
+          <td>
+            <a href="#" class="btn btn-info">Xem</a>
+            <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
+          </td>
+        </tr>
+      `;
+}
 // Hàm lấy danh sách sản phẩm
 async function layDanhSachSanPham() {
-    window.contract.methods.layDanhSachSanPham()
-        .call()
-        .then(function (result) {
-            console.log('Danh sách sản phẩm:', result);
-            const danhSachSanPhamDiv = document.getElementById('danhSachSanPham');
-            danhSachSanPhamDiv.innerHTML = '';
+    try {
+        const result = await window.contract.methods.layDanhSachSanPham().call({ from: window.account });
+        console.log('Danh sách sản phẩm:', result);
+        // productList.innerHTML = '';
 
-            result.forEach(async (idSanPham) => {
-                const sanPham = await window.contract.methods.danhSachSanPham(idSanPham).call();
-                const sanPhamDiv = document.createElement('div');
-                sanPhamDiv.innerHTML = `
-                    <p>ID: ${sanPham.id}</p>
-                    <p>Tên: ${sanPham.ten}</p>
-                    <p>Nhà sản xuất: ${sanPham.nhaSanXuat}</p>
-                    <p>Loại sản phẩm: ${sanPham.loaiSanPham}</p>
-                    <p>Kích thước: ${sanPham.kichThuoc}</p>
-                    <p>Trọng lượng: ${sanPham.trongLuong}</p>
-                    <p>Hạn sử dụng: ${sanPham.hanSuDung}</p>
-                    <hr>
-                `;
-                danhSachSanPhamDiv.appendChild(sanPhamDiv);
-            });
-        })
-        .catch(function (error) {
-            console.error('Đã xảy ra lỗi:', error);
-            showLog('<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>' + jsonToHtml(error)) + '</p>';
-        });
+        // for (const id of result) {
+        //     const sanPham = await window.contract.methods.danhSachSanPham(id).call();
+        //     productList.innerHTML += createProductItem(sanPham);
+        // }
+
+        // showLog(`<h4>Danh sách sản phẩm</h4><p>${jsonToHtml(result)}</p>`);
+    } catch (error) {
+        console.error('Đã xảy ra lỗi:', error);
+        showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
+    }
+}
+
+
+// Danh sách sản phẩm mẫu
+const sampleProducts = [
+    {
+        idSanPham: "NS-20230001",
+        tenSanPham: "Nông sản tươi",
+        nhaSanXuat: "Công ty nông sản ABC",
+        loaiSanPham: "Nông sản",
+        trangThai: "Đang sản xuất",
+    },
+    {
+        idSanPham: "MM-20230002",
+        tenSanPham: "Máy móc xây dựng",
+        nhaSanXuat: "Công ty máy móc XYZ",
+        loaiSanPham: "Máy móc",
+        trangThai: "Đang vận chuyển",
+    },
+    {
+        idSanPham: "HH-20230003",
+        tenSanPham: "Hàng hoá tiêu dùng",
+        nhaSanXuat: "Công ty hàng tiêu dùng",
+        loaiSanPham: "Tiêu dùng",
+        trangThai: "Đang bày bán",
+    },
+    {
+        idSanPham: "NS-20230004",
+        tenSanPham: "Nông sản khô",
+        nhaSanXuat: "Công ty nông sản ABC",
+        loaiSanPham: "Nông sản",
+        trangThai: "Đã bán",
+    },
+    {
+        idSanPham: "MM-20230005",
+        tenSanPham: "Máy móc nông nghiệp",
+        nhaSanXuat: "Công ty máy móc XYZ",
+        loaiSanPham: "Máy móc",
+        trangThai: "Đang sản xuất",
+    },
+];
+
+// Hiển thị sản phẩm mẫu
+sampleProducts.forEach((product) => {
+    productList.innerHTML += `
+      <tr>
+        <td>${product.idSanPham}</td>
+        <td>${product.tenSanPham}</td>
+        <td>${product.nhaSanXuat}</td>
+        <td>${product.loaiSanPham}</td>
+        <td>${product.trangThai}</td>
+        <td>
+          <a href="#" class="btn btn-info">Xem</a>
+          <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
+        </td>
+      </tr>
+    `;
+});
+
+// Hàm tìm kiếm sản phẩm
+function searchProducts() {
+    const filteredProducts = sampleProducts.filter((product) => {
+        return (
+            product.idSanPham.toLowerCase().includes(document.getElementById("search-id").value.toLowerCase()) &&
+            product.tenSanPham.toLowerCase().includes(document.getElementById("search-name").value.toLowerCase()) &&
+            product.nhaSanXuat.toLowerCase().includes(document.getElementById("search-manufacturer").value.toLowerCase()) &&
+            product.loaiSanPham.toLowerCase().includes(document.getElementById("search-type").value.toLowerCase()) &&
+            product.trangThai.toLowerCase().includes(document.getElementById("search-status").value.toLowerCase())
+        );
+    });
+
+    // Hiển thị kết quả tìm kiếm
+    productList.innerHTML = "";
+    filteredProducts.forEach((product) => {
+        productList.innerHTML += `
+        <tr>
+          <td>${product.idSanPham}</td>
+          <td>${product.tenSanPham}</td>
+          <td>${product.nhaSanXuat}</td>
+          <td>${product.loaiSanPham}</td>
+          <td>${product.trangThai}</td>
+          <td>
+            <a href="#" class="btn btn-info">Xem</a>
+            <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
+          </td>
+        </tr>
+      `;
+    });
 }

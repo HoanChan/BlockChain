@@ -84,7 +84,7 @@ console.log(`port is open on ${portNumber}`);
     <button id="conn" onclick="Conn2BC()">Kết nối đến mạng blockchain</button>
     ```
     - Viết mã javascript để kết nối tới mạng BlockChain trong file `static\src\base.js`:
-    ```javascript
+    ```javascript    
     async function readABIFromURL(url) {
         try {
             const response = await fetch(url);
@@ -102,9 +102,11 @@ console.log(`port is open on ${portNumber}`);
                 const accounts = await window.ethereum.request({
                     method: "eth_requestAccounts",
                 });
-                const account = accounts[0];
-                const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json");
-                const Address = "0x6E888cc48eE971698a218e2E0CD7C7e4de29dd53";
+                window.account = accounts[0];
+                // Đường dẫn tới file .json của smart contract đã compile
+                const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json"); 
+                // Địa chỉ của smart contract
+                const Address = "0x20a68628cb5c568013fdb549451563159994766c";
                 window.web3 = new Web3(window.ethereum);
                 window.contract = new window.web3.eth.Contract(ABI, Address);
                 document.getElementById("conn").innerHTML = "Đã kết nối với mạng Blockchain.";
@@ -117,8 +119,8 @@ console.log(`port is open on ${portNumber}`);
         }
     };
     ```
-    `ABI` được tự động đọc vào từ file `.json` được tạo lúc compile bằng `Truffle` <br>
-    `Address` là địa chỉ của tài khoản ví (Public key được `Ganache` tạo sẵn khi khởi động máy chủ)
+    `ABI` của `Smart Contract` được tự động đọc vào từ file `.json` được tạo lúc `Compile` bằng `Truffle` <br>
+    `Address` là địa chỉ của `Smart Contract` sau khi được `Deploy` bằng `Truffle`
     - Thêm `base.js` vào `main.html`:
     ```html
     <script src="/js/base.js"></script>
