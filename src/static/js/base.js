@@ -75,7 +75,7 @@ const Conn2BC = async () => {
             });
             window.account = accounts[0];
             const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json"); // Đường dẫn tới file .json của smart contract đã compile
-            const Address = "0x20a68628cb5c568013fdb549451563159994766c"; // Địa chỉ của smart contract
+            const Address = "0xd3cb290940d06fc3e4d8e1ae41b3ddae5dc48d04"; // Địa chỉ của smart contract
             window.web3 = new Web3(window.ethereum);
             window.contract = new window.web3.eth.Contract(ABI, Address);
             document.getElementById("conn").innerHTML = "Đã kết nối với mạng Blockchain.";
@@ -97,7 +97,7 @@ async function taoSanPham() {
     const nhaSanXuat = document.getElementById('nhaSanXuat').value;
     const loaiSanPham = document.getElementById('loaiSanPham').value;
     const kichThuoc = document.getElementById('kichThuoc').value;
-    const trongLuong = document.getElementById('trongLuong').value;
+    const trongLuong = document.getElementById('trongLuong').value.toString();
     const hanSuDung = document.getElementById('hanSuDung').value;
 
     window.contract.methods.taoSanPham(id, ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung)
