@@ -2,21 +2,10 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "npm",
-			"script": "start",
-			"problemMatcher": [],
-			"label": "Start app",
-			"detail": "npm run start",
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			}
-		},
-		{
 			"type": "shell",
 			"command": "npx ganache-cli --account \"0xa27d7934c86a4fa7d338d633cb33f100a871aa1e985177ac1434a76ab37a7a7c,1000000000000000000000\" --account \"0xff94674bde28731b78d6ba622b35ba7282d62b9eb5c653ccef04adc5160a52da,1000000000000000000000\" --db \"/workspaces/BlockChain/database\"",
 			"problemMatcher": [],
-			"label": "Run Ganache",
+			"label": "1. Run Ganache",
 			"detail": "npx ganache-cli",
 			"group": {
 				"kind": "build",
@@ -24,11 +13,33 @@
 			}
 		},
 		{
-			"type": "shell",
+			"type": "shell", 
 			"command": "npx truffle migrate --network development",
 			"problemMatcher": [],
-			"label": "Compile and Deploy contracts",
+			"label": "2. Compile and Deploy contracts",
 			"detail": "npx truffle migrate",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "shell",
+			"command": "npx truffle test",
+			"problemMatcher": [],
+			"label": "2. Test contracts",
+			"detail": "npx truffle test",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [],
+			"label": "3. Start app",
+			"detail": "npm run start",
 			"group": {
 				"kind": "build",
 				"isDefault": false

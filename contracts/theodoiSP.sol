@@ -27,7 +27,7 @@ contract TheoDoiSanPham {
     
     mapping(string => SanPham) public danhSachSanPham;
     
-    event SanPhamDaTao(string idSanPham, string tenSanPham);
+    event TaoSanPham(string idSanPham, string tenSanPham);
     event CapNhatTrangThai(string idSanPham, string tenTrangThai, string thoiGian, string diaDiem, string loaiTrangThai, string moTaChiTiet);
     
     function taoSanPham(string memory id, string memory ten, string memory nhaSanXuat, string memory loaiSanPham, string memory kichThuoc, string memory trongLuong, string memory hanSuDung) public {
@@ -36,7 +36,7 @@ contract TheoDoiSanPham {
         danhSachMaSanPham.push(id);
         
         danhSachSanPham[id] = SanPham(id, ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung);
-        emit SanPhamDaTao(id, ten);
+        emit TaoSanPham(id, ten);
     }
 
     function capNhatTrangThai(string memory idSanPham, string memory tenTrangThai, string memory thoiGian, string memory diaDiem, string memory loaiTrangThai, string memory moTaChiTiet) public {
@@ -52,7 +52,14 @@ contract TheoDoiSanPham {
         return lichSuTrangThaiSanPham[idSanPham];
     }
 
-    function layDanhSachSanPham() public view returns (string[] memory) {
-        return danhSachMaSanPham;
+    function layDanhSachSanPham() public view returns (SanPham[] memory) {
+        SanPham[] memory danhSachSanPhamChiTiet = new SanPham[](danhSachMaSanPham.length);
+        
+        for (uint i = 0; i < danhSachMaSanPham.length; i++) {
+            danhSachSanPhamChiTiet[i] = danhSachSanPham[danhSachMaSanPham[i]];
+        }
+        
+        return danhSachSanPhamChiTiet;
     }
+
 }

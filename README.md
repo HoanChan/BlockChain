@@ -41,99 +41,32 @@ Blockchain có thể được sử dụng để tạo ra một hệ thống truy
 3. Gõ các lệnh trên terminal để kiểm tra và thiết lập dự án.
 - Gõ lệnh: `npx truffle -v` trên terminal để xem các thông tin về phiên bản của `Truffle`, `Ganache`, `Solidity`, `Node` và `Web3.js`.
 - Gõ lệnh `npx truffle init` trên terminal để bắt đầu thiết lập các file, thư mục cơ bản cho dự án.
-- Gõ lệnh: `npx ganache-cli` trên terminal để khởi động Ganache và xem các thông tin về network và accounts.
-4. Copy các thông tin về network của Ganache vào file cấu hình `truffle-config.js`.
-
-```javascript
-module.exports = {
-  networks: {
-    development: {
-      host: "0.0.0.0",     // Sử dụng "0.0.0.0" thay vì "127.0.0.1" trên CodeSpace
-      port: 8545,          // Cổng mặc định của Ganache
-      network_id: "*",     // Khớp với bất kỳ network ID nào
-    },
-  }
-}
+- Gõ lệnh: `npx ganache-cli` trên terminal để khởi động Ganache và xem các thông tin về network và accounts. Tuy nhiên vì hoạt động trên CodeSpace và mỗi lần khởi động ganache lại tạo các tài khoản ngẫu nhiên làm chúng ta phải cấu hình lại nên sẽ cố định địa chỉ ví, nơi lưu dữ liệu của các block như sau:
+```bash
+npx ganache-cli --account "0xa27d7934c86a4fa7d338d633cb33f100a871aa1e985177ac1434a76ab37a7a7c,1000000000000000000000" --account "0xff94674bde28731b78d6ba622b35ba7282d62b9eb5c653ccef04adc5160a52da,1000000000000000000000" --db "/workspaces/BlockChain/database"
 ```
-5. Gõ lệnh `npx truffle compile` trên terminal để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts`
-6. Tạo file `index.js` chứa thông tin máy chủ node.js
-```javascript
-const express = require("express");
-const path = require("path");
-const app = express();
+Lệnh này đã được cấu hình sẵn ở `.vscode/tasks.json` nên chỉ cần nhấn `Ctrl + Shift + B` và chọn `Ganache` để chạy.
 
-// Khai báo thư mục public
-app.use(express.static(path.join(__dirname, '/src/static/')));
-app.use(express.static(path.join(__dirname, '/build/')));
+4. Copy các thông tin về network của Ganache vào file cấu hình [truffle-config.js](truffle-config.js)
+5. Gõ lệnh `npx truffle migrate --network development` trên terminal để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts` đồng thời deploy các contracts lên máy chủ `Ganache`.
+6. Tạo file [TheoDoiSanPham.test.js](test/TheoDoiSanPham.test.js) trong thư mục test để kiểm tra các hàm trong `Smart Contract`.
+7. Gõ lệnh `npx truffle test` trên terminal để chạy việc kiểm tra các hàm trong `Smart Contract`, đảm bảo các hàm hoạt động đúng như mong muốn trước khi phát triển tiếp.
+8. Tạo file [index.js](index.js) chứa thông tin máy chủ node.js
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/src/main.html"));
-})
-
-const server = app.listen(5000);
-const portNumber = server.address().port;
-console.log(`port is open on ${portNumber}`);
-```
-7. Tạo file `main.html` trong thư mục `src` và các file khác để dựng giao diện ứng dụng.
-    - Nếu cần sử dụng web3 thì thêm thư viện vào:
-    ```html
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
-    ```
-    - Thêm nút vào HTML:
-    ```html
-    <button id="conn" onclick="Conn2BC()">Kết nối đến mạng blockchain</button>
-    ```
-    - Viết mã javascript để kết nối tới mạng BlockChain trong file `static\src\base.js`:
-    ```javascript    
-    async function readABIFromURL(url) {
-        try {
-            const response = await fetch(url);
-            const contractData = await response.json();
-            return contractData.abi;
-        } catch (error) {
-            console.error('Error fetching file:', error);
-            return null;
-        }
-    }
-
-    const Conn2BC = async () => {
-        if (typeof window.ethereum !== "undefined") {
-            try {
-                const accounts = await window.ethereum.request({
-                    method: "eth_requestAccounts",
-                });
-                window.account = accounts[0];
-                // Đường dẫn tới file .json của smart contract đã compile
-                const ABI = await readABIFromURL("/contracts/TheoDoiSanPham.json"); 
-                // Địa chỉ của smart contract
-                const Address = "0x20a68628cb5c568013fdb549451563159994766c";
-                window.web3 = new Web3(window.ethereum);
-                window.contract = new window.web3.eth.Contract(ABI, Address);
-                document.getElementById("conn").innerHTML = "Đã kết nối với mạng Blockchain.";
-            } catch (error) {
-                document.getElementById("conn").innerHTML = "Có lỗi xảy ra khi kết nối với MetaMask.";
-                console.error(error);
-            }
-        } else {
-            document.getElementById("conn").innerHTML = "MetaMask chưa được cài đặt. Cài đi nào!";
-        }
-    };
-    ```
-    `ABI` của `Smart Contract` được tự động đọc vào từ file `.json` được tạo lúc `Compile` bằng `Truffle` <br>
-    `Address` là địa chỉ của `Smart Contract` sau khi được `Deploy` bằng `Truffle`
-    - Thêm `base.js` vào `main.html`:
-    ```html
-    <script src="/js/base.js"></script>
-    ```
-8. Để `web3` hoạt động được cần:
+9. Tạo file các file khác để dựng giao diện ứng dụng:
+    - [main.html](src/main.html) chứa giao diện ứng dụng.
+    - [base.js](src/static/js/base.js) chứa các hàm để kết nối và gọi các hàm trong `Smart Contract`.
+    
+10. Để `web3` hoạt động được cần:
     - Cài đặt `MetaMask`, mở lên và đăng nhập.
     - Vào phần cài đặt để thiết lập máy chủ.
     - Thêm máy chủ `Ganache` ở mục `Networks` 
         - Địa chỉ máy chủ copy ở mục `PORTS` của VSCode - do đang chạy trên CodeSpace, nếu chạy trên Local thì copy từ `truffle-config.js`
         - ID mặc định là `1337` (xem ở terminal chạy `Ganache`)
     - Thêm tài khoản ví (1 trong các tài khoản - Private key được `Ganache` tạo sẵn khi khởi động máy chủ)
-9. Chạy ứng dụng:
-    - Đảm bảo contract đã được compile (Gõ lệnh `npx truffle compile` nếu cần compile lại )
-    - Đảm bảo máy chủ `Ganache` đã hoạt động (Gõ lệnh `npx ganache-cli` nếu cần chạy lại)
+    - Viết các lệnh để kết nối tới `MetaMask`, gọi các hàm trong `Smart Contract` trong file `base.js`
+11. Chạy ứng dụng:
+    - Đảm bảo máy chủ `Ganache` đã hoạt động.
+    - Đảm bảo contract đã được compile và deploy lên máy chủ `Ganache`.
     - Gõ lệnh: `npm run start` trên terminal.
     - Cả 3 lệnh trên đều được cấu hình ở `.vscode/tasks.json` nên có thể nhấn `Ctrl + Shift + B` và chọn lệnh để thực hiện.
