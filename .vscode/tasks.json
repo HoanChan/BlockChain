@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"command": "npx ganache-cli --account \"0xa27d7934c86a4fa7d338d633cb33f100a871aa1e985177ac1434a76ab37a7a7c,1000000000000000000000\" --account \"0xff94674bde28731b78d6ba622b35ba7282d62b9eb5c653ccef04adc5160a52da,1000000000000000000000\" --db \"/workspaces/BlockChain/database\"",
+			"command": "find \"/workspaces/BlockChain/database\" -mindepth 1 ! -name '.gitkeep' -delete && npx ganache-cli --account \"0xff94674bde28731b78d6ba622b35ba7282d62b9eb5c653ccef04adc5160a52da,1000000000000000000000\" --db \"/workspaces/BlockChain/database\"",
 			"problemMatcher": [],
 			"label": "1. Run Ganache",
 			"detail": "npx ganache-cli",
@@ -17,7 +17,7 @@
 			"command": "npx truffle migrate --network development",
 			"problemMatcher": [],
 			"label": "2. Compile and Deploy contracts",
-			"detail": "npx truffle migrate",
+			"detail": "npx truffle migrate --reset",
 			"group": {
 				"kind": "build",
 				"isDefault": false
