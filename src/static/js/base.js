@@ -29,11 +29,15 @@ async function taoSP() {
         const value = document.getElementById(key).value;
         data.push(value);
     }
+    const id = data[0];
+    data.shift();
     const dataString = data.join('|');
+    console.log('Tạo sản phẩm với dữ liệu:', id, dataString);
     window.contract.methods.taoSP(id, dataString)
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Sản phẩm đã được tạo:', receipt);
+            addRawDataToProductList({ id, data: dataString });
             showLog(`<h4>Sản phẩm đã được tạo</h4><p>${jsonToHtml(receipt)}</p>`);
         })
         .on('error', function (error) {
@@ -51,16 +55,20 @@ async function laySP() {
         console.log('Danh sách sản phẩm:', result);
         lstProduct.innerHTML = '';
         productList = [];
-        for (const sanPham of result) {
-            const product = createProductData(sanPham);
-            productList.push(product);
-            lstProduct.innerHTML += createProductItem(product);
+        for (const rawData of result) {
+            addRawDataToProductList(rawData);
         }
         // showLog(`<h4>Danh sách sản phẩm</h4><p>${jsonToHtml(result)}</p>`);
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
         showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
     }
+}
+
+function addRawDataToProductList(rawData) {
+    const product = createProductData(rawData);
+    productList.push(product);
+    lstProduct.innerHTML += createProductItem(product);
 }
 
 function createProductData(rawData) {
