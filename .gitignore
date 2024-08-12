@@ -121,3 +121,6 @@ temp/
 
 # Blockchain Database
 database/
+
+# build output
+build/contracts/
