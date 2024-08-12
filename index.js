@@ -7,7 +7,7 @@ app.use(express.static(path.join(__dirname, '/src/static/')));
 app.use(express.static(path.join(__dirname, '/build/')));
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/src/main2.html"));
+    res.sendFile(path.join(__dirname, "/src/main.html"));
 })
 
 const server = app.listen(5000);

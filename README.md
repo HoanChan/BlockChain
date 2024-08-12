@@ -48,16 +48,15 @@ npx ganache-cli --account "0xa27d7934c86a4fa7d338d633cb33f100a871aa1e985177ac143
 Lệnh này đã được cấu hình sẵn ở `.vscode/tasks.json` nên chỉ cần nhấn `Ctrl + Shift + B` và chọn `Ganache` để chạy.
 
 4. Copy các thông tin về network của Ganache vào file cấu hình [truffle-config.js](truffle-config.js)
-5. Gõ lệnh `npx truffle migrate --network development` trên terminal để biên dịch các file `.sol` trong thư mục `contracts`, kết quả sẽ là các file tương ứng với tên contracts và được lưu trong thư mục `build\contracts` đồng thời deploy các contracts lên máy chủ `Ganache`.
-6. Tạo file [TheoDoiSanPham.test.js](test/TheoDoiSanPham.test.js) trong thư mục test để kiểm tra các hàm trong `Smart Contract`.
-7. Gõ lệnh `npx truffle test` trên terminal để chạy việc kiểm tra các hàm trong `Smart Contract`, đảm bảo các hàm hoạt động đúng như mong muốn trước khi phát triển tiếp.
-8. Tạo file [index.js](index.js) chứa thông tin máy chủ node.js
-
-9. Tạo file các file khác để dựng giao diện ứng dụng:
+5. Tạo file [migrations/1_deploy.js](migrations/1_deploy.js) để deploy các contracts lên máy chủ `Ganache`. Trong file này chúng ta viết code để thêm dữ liệu ban đầu cho `Smart Contract` luôn.
+6. Gõ lệnh `npx truffle migrate --network development` trên terminal để biên dịch `Smart Contract`, kết quả sẽ là file tương ứng với tên contracts và được lưu trong thư mục `build\contracts` đồng thời triển khai các contracts lên máy chủ `Ganache`.
+7. Tạo file [TheoDoiSanPham.test.js](test/TheoDoiSanPham.test.js) trong thư mục test để kiểm tra các hàm trong `Smart Contract`.
+8. Gõ lệnh `npx truffle test` trên terminal để chạy việc kiểm tra các hàm trong `Smart Contract`, đảm bảo các hàm hoạt động đúng như mong muốn trước khi phát triển tiếp.
+9. Tạo file [index.js](index.js) chứa thông tin máy chủ node.js
+10. Tạo file các file khác để dựng giao diện ứng dụng:
     - [main.html](src/main.html) chứa giao diện ứng dụng.
-    - [base.js](src/static/js/base.js) chứa các hàm để kết nối và gọi các hàm trong `Smart Contract`.
-    
-10. Để `web3` hoạt động được cần:
+    - [base.js](src/static/js/base.js) chứa các hàm để kết nối và gọi các hàm trong `Smart Contract`.  
+11. Để `web3` hoạt động được cần:
     - Cài đặt `MetaMask`, mở lên và đăng nhập.
     - Vào phần cài đặt để thiết lập máy chủ.
     - Thêm máy chủ `Ganache` ở mục `Networks` 
@@ -65,7 +64,7 @@ Lệnh này đã được cấu hình sẵn ở `.vscode/tasks.json` nên chỉ 
         - ID mặc định là `1337` (xem ở terminal chạy `Ganache`)
     - Thêm tài khoản ví (1 trong các tài khoản - Private key được `Ganache` tạo sẵn khi khởi động máy chủ)
     - Viết các lệnh để kết nối tới `MetaMask`, gọi các hàm trong `Smart Contract` trong file `base.js`
-11. Chạy ứng dụng:
+12. Chạy ứng dụng:
     - Đảm bảo máy chủ `Ganache` đã hoạt động.
     - Đảm bảo contract đã được compile và deploy lên máy chủ `Ganache`.
     - Gõ lệnh: `npm run start` trên terminal.

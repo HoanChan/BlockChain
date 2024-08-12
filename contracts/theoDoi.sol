@@ -16,7 +16,7 @@ contract TheoDoi {
         string data;
     }
     
-    mapping(string => SanPham) public sanPhams;
+    mapping(string => SanPham) public dsSanPham;
     
     event Tao(string id);
     event CapNhat(string id, string data);
@@ -26,10 +26,24 @@ contract TheoDoi {
         idDaTonTai[id] = true;
         ids.push(id);
         
-        sanPhams[id] = SanPham(id, data);
+        dsSanPham[id] = SanPham(id, data);
         emit Tao(id);
     }
 
+    function dsSP() public view returns (SanPham[] memory) {
+        SanPham[] memory spChiTiet = new SanPham[](ids.length);
+        
+        for (uint i = 0; i < ids.length; i++) {
+            spChiTiet[i] = dsSanPham[ids[i]];
+        }
+        
+        return spChiTiet;
+    }
+
+    function xemSP(string memory id) public view returns (SanPham memory) {
+        return dsSanPham[id];
+    }
+    
     function capNhat(string memory id, string memory data) public {
         require(idDaTonTai[id], "Id khong ton tai");
         
@@ -39,17 +53,8 @@ contract TheoDoi {
         emit CapNhat(id, data);
     }
 
-    function xemLichSu(string memory id) public view returns (TrangThai[] memory) {
+    function xemLS(string memory id) public view returns (TrangThai[] memory) {
         return lichSu[id];
     }
 
-    function laySP() public view returns (SanPham[] memory) {
-        SanPham[] memory spChiTiet = new SanPham[](ids.length);
-        
-        for (uint i = 0; i < ids.length; i++) {
-            spChiTiet[i] = sanPhams[ids[i]];
-        }
-        
-        return spChiTiet;
-    }
 }
