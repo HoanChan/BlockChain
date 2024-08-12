@@ -21,17 +21,16 @@ const Conn2BC = async () => {
 };
 
 const diagThemSPModal = new bootstrap.Modal(document.getElementById('diagThemSP'));
+const procedureProperties = { id: 'Mã số', ten: 'Tên', nhaSanXuat: 'Nhà sản xuất', loaiSanPham: 'Loại', kichThuoc: 'Kích thước', trongLuong: 'Trọng lượng', hanSuDung: 'Hạn sử dụng' };
 // Hàm tạo sản phẩm
 async function taoSP() {
-    const id = document.getElementById('idSanPham').value;
-    const ten = document.getElementById('tenSanPham').value;
-    const nhaSanXuat = document.getElementById('nhaSanXuat').value;
-    const loaiSanPham = document.getElementById('loaiSanPham').value;
-    const kichThuoc = document.getElementById('kichThuoc').value;
-    const trongLuong = document.getElementById('trongLuong').value.toString();
-    const hanSuDung = document.getElementById('hanSuDung').value;
-    const data = `${ten}|${nhaSanXuat}|${loaiSanPham}|${kichThuoc}|${trongLuong}|${hanSuDung}`;
-    window.contract.methods.taoSP(id, data)
+    let data = [];
+    for (const key in procedureProperties) {
+        const value = document.getElementById(key).value;
+        data.push(value);
+    }
+    const dataString = data.join('|');
+    window.contract.methods.taoSP(id, dataString)
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Sản phẩm đã được tạo:', receipt);
@@ -43,40 +42,44 @@ async function taoSP() {
         });
 }
 
+const lstProduct = document.getElementById("product-list");
+let productList = [];
 // Hàm lấy danh sách sản phẩm
 async function laySP() {
     try {
         const result = await window.contract.methods.dsSP().call();
         console.log('Danh sách sản phẩm:', result);
-        productList.innerHTML = '';
-
+        lstProduct.innerHTML = '';
+        productList = [];
         for (const sanPham of result) {
-            productList.innerHTML += createProductItem(sanPham);
+            const product = createProductData(sanPham);
+            productList.push(product);
+            lstProduct.innerHTML += createProductItem(product);
         }
-
-        showLog(`<h4>Danh sách sản phẩm</h4><p>${jsonToHtml(result)}</p>`);
+        // showLog(`<h4>Danh sách sản phẩm</h4><p>${jsonToHtml(result)}</p>`);
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
         showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
     }
 }
 
-const productList = document.getElementById("product-list");
-function createProductItem(product){
-    const [id, data] = [product[`id`], product[`data`]];
+function createProductData(rawData) {
+    const [id, data] = [rawData[`id`], rawData[`data`]];
     const [ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung] = data.split('|');
+    return { id, ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung };
+}
+
+function createProductItem(product) {
+    let properties = '';
+    for (const key in procedureProperties) {
+        properties += `<td>${product[key]}</td>`;
+    }
     return `
         <tr>
-          <td>${id}</td>
-          <td>${ten}</td>
-          <td>${nhaSanXuat}</td>
-          <td>${loaiSanPham}</td>
-          <td>${kichThuoc}</td>
-          <td>${trongLuong}</td>
-          <td>${hanSuDung}</td>
+          ${properties}
           <td>
-            <a href="#" class="btn btn-info">Xem</a>
-            <a href="#" class="btn btn-warning">Cập nhật trạng thái</a>
+            <a href="#" class="btn btn-info" onclick="showProcedure('${product.id}')">Xem</a>
+            <a href="#" class="btn btn-warning" onclick="updateProcedure('${product.id}')">Cập nhật trạng thái</a>
           </td>
         </tr>
       `;
@@ -149,4 +152,23 @@ async function readABIFromURL(url) {
         console.error('Error fetching file:', error);
         return null;
     }
+}
+
+// Hàm tìm kiếm sản phẩm
+function searchProducts() {
+    const filteredProducts = productList.filter((product) => {
+        return (
+            product.id.toLowerCase().includes(document.getElementById("search-id").value.toLowerCase()) &&
+            product.ten.toLowerCase().includes(document.getElementById("search-name").value.toLowerCase()) &&
+            product.nhaSanXuat.toLowerCase().includes(document.getElementById("search-manufacturer").value.toLowerCase()) &&
+            product.loaiSanPham.toLowerCase().includes(document.getElementById("search-type").value.toLowerCase()) &&
+            product.kichThuoc.toLowerCase().includes(document.getElementById("search-size").value.toLowerCase()) &&
+            product.trongLuong.toLowerCase().includes(document.getElementById("search-weight").value.toLowerCase()) &&
+            product.hanSuDung.toLowerCase().includes(document.getElementById("search-expiration").value.toLowerCase())
+        );
+    });
+
+    // Hiển thị kết quả tìm kiếm
+    lstProduct.innerHTML = "";
+    filteredProducts.forEach((product) => { lstProduct.innerHTML += createProductItem(product); });
 }

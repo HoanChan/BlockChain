@@ -36,11 +36,13 @@
     <div class="mb-3">
       <div class="input-group">
         <!-- Ô tìm kiếm -->
-        <input type="text" class="form-control" id="search-id" placeholder="Tìm theo ID..." />
-        <input type="text" class="form-control" id="search-name" placeholder="Tìm theo Tên..." />
-        <input type="text" class="form-control" id="search-manufacturer" placeholder="Tìm theo Nhà sản xuất..." />
-        <input type="text" class="form-control" id="search-type" placeholder="Tìm theo Loại sản phẩm..." />
-        <input type="text" class="form-control" id="search-status" placeholder="Tìm theo Trạng thái..." />
+        <input type="text" class="form-control" id="search-id" placeholder="ID" />
+        <input type="text" class="form-control" id="search-name" placeholder="Tên" />
+        <input type="text" class="form-control" id="search-manufacturer" placeholder="Nhà sản xuất" />
+        <input type="text" class="form-control" id="search-type" placeholder="Loại sản phẩm" />
+        <input type="text" class="form-control" id="search-size" placeholder="Kích thước" />
+        <input type="text" class="form-control" id="search-weight" placeholder="Trọng lượng" />
+        <input type="text" class="form-control" id="search-expiration" placeholder="Hạn sử dụng" />
         <button class="btn btn-primary" onclick="searchProducts()">
           Tìm kiếm
         </button>
@@ -53,7 +55,9 @@
           <th>Tên sản phẩm</th>
           <th>Nhà sản xuất</th>
           <th>Loại sản phẩm</th>
-          <th>Trạng thái</th>
+          <th>Kích thước</th>
+          <th>Trọng lượng</th>
+          <th>Hạn sử dụng</th>
           <th>Thao tác</th>
         </tr>
       </thead>
@@ -67,7 +71,7 @@
     </div>
   </div>
 
-  <!-- Modal THêm sản phẩm-->
+  <!-- Modal Thêm sản phẩm-->
   <div class="modal fade" id="diagThemSP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="diagThemSPLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
