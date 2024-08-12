@@ -13,7 +13,7 @@ contract("TheoDoi", (accounts) => {
 
         await theoDoiInstance.taoSP(id, data);
 
-        const sp = await theoDoiInstance.sanPhams(id);
+        const sp = await theoDoiInstance.xemSP(id);
         assert.equal(sp.id, id, "Product ID does not match");
         assert.equal(sp.data, data, "Product data does not match");
     });
@@ -24,7 +24,7 @@ contract("TheoDoi", (accounts) => {
 
         await theoDoiInstance.capNhat(id, data);
 
-        const lichSu = await theoDoiInstance.xemLichSu(id);
+        const lichSu = await theoDoiInstance.xemLS(id);
         assert.equal(lichSu.length, 1, "Status history length is not correct");
         assert.equal(lichSu[0].data, data, "Status data does not match");
     });
@@ -50,7 +50,7 @@ contract("TheoDoi", (accounts) => {
         await theoDoiInstance.taoSP(id1, data1);
         await theoDoiInstance.taoSP(id2, data2);
 
-        const products = await theoDoiInstance.laySP();
+        const products = await theoDoiInstance.dsSP();
 
         assert.equal(products.length, 3, "Product list length is incorrect");
         assert.equal(products[1].id, id1, "Second product ID does not match");
