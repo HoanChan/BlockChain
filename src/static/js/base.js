@@ -180,3 +180,39 @@ function searchProducts() {
     lstProduct.innerHTML = "";
     filteredProducts.forEach((product) => { lstProduct.innerHTML += createProductItem(product); });
 }
+
+const diagXemSPModal = new bootstrap.Modal(document.getElementById('diagXemSP'));
+const diagXemSPModalLog = document.getElementById('diagXemSPLog');
+const logProperties = { tenTrangThai: 'Trạng thái', thoiGian: 'Thời gian', diaDiem: 'Địa điểm', loaiTrangThai: 'Loại', moTaChiTiet: 'Mô tả' };
+// Hàm hiển thị thông tin sản phẩm
+async function showProcedure(id) {
+    const product = productList.find((product) => product.id === id);
+    for (const key in procedureProperties) {
+        document.getElementById(`pro-${key}`).innerHTML = product[key];
+    }
+    try {
+        const result = await window.contract.methods.xemLS(id).call();
+        console.log('Lịch sử của sản phẩm:', id, ' là \n', result);
+        diagXemSPModalLog.innerHTML = '';
+        for (const rawData of result) {
+            diagXemSPModalLog.innerHTML += createLogItem(createLogData(rawData));
+        }
+        diagXemSPModal.show();
+    } catch (error) {
+        console.error('Đã xảy ra lỗi:', error);
+        showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
+    }
+}
+
+function createLogData(rawData) {
+    const data = rawData[`data`];
+    const [tenTrangThai, thoiGian, diaDiem, loaiTrangThai, moTaChiTiet] = data.split('|');
+    return { tenTrangThai, thoiGian, diaDiem, loaiTrangThai, moTaChiTiet };
+}
+function createLogItem(log) {
+    let properties = '';
+    for (const key in logProperties) {
+        properties += `<td>${log[key]}</td>`;
+    }
+    return `<tr>${properties}</tr>`;
+}
