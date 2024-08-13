@@ -57,4 +57,20 @@ contract TheoDoi {
         return lichSu[id];
     }
 
+    struct chiTietSP {
+        string id;
+        string data;
+        string status;
+    }
+
+    function dsSP2() public view returns (chiTietSP[] memory) {
+        chiTietSP[] memory spChiTiet = new chiTietSP[](ids.length);
+        
+        for (uint i = 0; i < ids.length; i++) {
+            spChiTiet[i] = chiTietSP(ids[i], dsSanPham[ids[i]].data, lichSu[ids[i]][lichSu[ids[i]].length - 1].data);
+        }
+        
+        return spChiTiet;
+    }
+
 }

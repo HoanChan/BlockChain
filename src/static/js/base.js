@@ -22,6 +22,7 @@ const Conn2BC = async () => {
 
 const diagThemSPModal = new bootstrap.Modal(document.getElementById('diagThemSP'));
 const procedureProperties = { id: 'Mã số', ten: 'Tên', nhaSanXuat: 'Nhà sản xuất', loaiSanPham: 'Loại', kichThuoc: 'Kích thước', trongLuong: 'Trọng lượng', hanSuDung: 'Hạn sử dụng' };
+const procedureView = { id: 'Mã số', ten: 'Tên', nhaSanXuat: 'Nhà sản xuất', loaiSanPham: 'Loại', trangThai: 'Trạng thái' };
 // Hàm tạo sản phẩm
 async function taoSP() {
     let data = [];
@@ -51,7 +52,7 @@ let productList = [];
 // Hàm lấy danh sách sản phẩm
 async function laySP() {
     try {
-        const result = await window.contract.methods.dsSP().call();
+        const result = await window.contract.methods.dsSP2().call();
         console.log('Danh sách sản phẩm:', result);
         lstProduct.innerHTML = '';
         productList = [];
@@ -72,14 +73,14 @@ function addRawDataToProductList(rawData) {
 }
 
 function createProductData(rawData) {
-    const [id, data] = [rawData[`id`], rawData[`data`]];
+    const [id, data, trangThai] = [rawData[`id`], rawData[`data`], rawData[`status`].split('|')[0]];
     const [ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung] = data.split('|');
-    return { id, ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung };
+    return { id, ten, nhaSanXuat, loaiSanPham, kichThuoc, trongLuong, hanSuDung, trangThai };
 }
 
 function createProductItem(product) {
     let properties = '';
-    for (const key in procedureProperties) {
+    for (const key in procedureView) {
         properties += `<td>${product[key]}</td>`;
     }
     return `
@@ -140,9 +141,6 @@ function showLog(logContent) {
       <div class="log-time">${currentTime}</div>
       <div class="log-content">${logContent}</div>
     `;
-
-    // Lấy phần tử body của modal
-
     // Thêm log vào body của modal
     diagLogModalBody.appendChild(logElement);
 
@@ -170,9 +168,7 @@ function searchProducts() {
             product.ten.toLowerCase().includes(document.getElementById("search-name").value.toLowerCase()) &&
             product.nhaSanXuat.toLowerCase().includes(document.getElementById("search-manufacturer").value.toLowerCase()) &&
             product.loaiSanPham.toLowerCase().includes(document.getElementById("search-type").value.toLowerCase()) &&
-            product.kichThuoc.toLowerCase().includes(document.getElementById("search-size").value.toLowerCase()) &&
-            product.trongLuong.toLowerCase().includes(document.getElementById("search-weight").value.toLowerCase()) &&
-            product.hanSuDung.toLowerCase().includes(document.getElementById("search-expiration").value.toLowerCase())
+            product.trangThai.toLowerCase().includes(document.getElementById("search-status").value.toLowerCase())
         );
     });
 
