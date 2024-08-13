@@ -49,7 +49,7 @@ async function taoSP() {
 
 const lstProduct = document.getElementById("product-list");
 let productList = [];
-// Hàm lấy danh sách sản phẩm
+
 async function laySP() {
     try {
         const result = await window.contract.methods.dsSP2().call();
@@ -59,7 +59,6 @@ async function laySP() {
         for (const rawData of result) {
             addRawDataToProductList(rawData);
         }
-        // showLog(`<h4>Danh sách sản phẩm</h4><p>${jsonToHtml(result)}</p>`);
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
         showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
@@ -128,23 +127,15 @@ const diagLogModal = new bootstrap.Modal(document.getElementById('diagLog'));
 const diagLogModalBody = document.getElementById('diagLogBody');
 
 function showLog(logContent) {
-    // Lấy thời gian hiện tại
     const currentTime = new Date().toLocaleString();
-
-    // Tạo phần tử div để chứa log
     const logElement = document.createElement('div');
     logElement.classList.add('log-entry');
-
-    // Tạo nội dung log
     logElement.innerHTML = `
       <hr>
       <div class="log-time">${currentTime}</div>
       <div class="log-content">${logContent}</div>
     `;
-    // Thêm log vào body của modal
     diagLogModalBody.appendChild(logElement);
-
-    // Hiển thị modal
     const diagLogModal = new bootstrap.Modal(document.getElementById('diagLog'));
     diagLogModal.show();
 }
@@ -160,7 +151,6 @@ async function readABIFromURL(url) {
     }
 }
 
-// Hàm tìm kiếm sản phẩm
 function searchProducts() {
     const filteredProducts = productList.filter((product) => {
         return (
@@ -171,8 +161,6 @@ function searchProducts() {
             product.trangThai.toLowerCase().includes(document.getElementById("search-status").value.toLowerCase())
         );
     });
-
-    // Hiển thị kết quả tìm kiếm
     lstProduct.innerHTML = "";
     filteredProducts.forEach((product) => { lstProduct.innerHTML += createProductItem(product); });
 }
@@ -180,7 +168,7 @@ function searchProducts() {
 const diagXemSPModal = new bootstrap.Modal(document.getElementById('diagXemSP'));
 const diagXemSPModalLog = document.getElementById('diagXemSPLog');
 const logProperties = { tenTrangThai: 'Trạng thái', thoiGian: 'Thời gian', diaDiem: 'Địa điểm', loaiTrangThai: 'Loại', moTaChiTiet: 'Mô tả' };
-// Hàm hiển thị thông tin sản phẩm
+
 async function showProcedure(id) {
     const product = productList.find((product) => product.id === id);
     for (const key in procedureProperties) {
@@ -193,6 +181,7 @@ async function showProcedure(id) {
         for (const rawData of result) {
             diagXemSPModalLog.innerHTML += createLogItem(createLogData(rawData));
         }
+        document.getElementById('btnThemTT').setAttribute('onclick', `showCapNhat('${id}')`);
         diagXemSPModal.show();
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
@@ -205,10 +194,44 @@ function createLogData(rawData) {
     const [tenTrangThai, thoiGian, diaDiem, loaiTrangThai, moTaChiTiet] = data.split('|');
     return { tenTrangThai, thoiGian, diaDiem, loaiTrangThai, moTaChiTiet };
 }
+
 function createLogItem(log) {
     let properties = '';
     for (const key in logProperties) {
         properties += `<td>${log[key]}</td>`;
     }
     return `<tr>${properties}</tr>`;
+}
+
+const diagThemTTModal = new bootstrap.Modal(document.getElementById('diagThemTT'));
+const diagThemTT_ID = document.getElementById('diagThemTT-Id');
+
+function showCapNhat(id) {
+    diagThemTT_ID.innerHTML = id;
+    for (const key in logProperties) {
+        document.getElementById(`log-${key}`).value = '';
+    }
+    document.getElementById('log-btnThemTT').setAttribute('onclick', `capNhat('${id}')`);
+    diagThemTTModal.show();
+}
+
+async function capNhat(id) {
+    data = [];
+    for (const key in logProperties) {
+        const value = document.getElementById(`log-${key}`).value;
+        data.push(value);
+    }
+    const dataString = data.join('|');
+    console.log('Cập nhật trạng thái sản phẩm:', id, dataString);
+    window.contract.methods.capNhat(id, dataString)
+        .send({ from: window.account })
+        .on('receipt', function (receipt) {
+            console.log('Trạng thái sản phẩm đã được cập nhật:', receipt);
+            showLog(`<h4>Trạng thái sản phẩm đã được cập nhật</h4><p>${jsonToHtml(receipt)}</p>`);
+            laySP();
+        })
+        .on('error', function (error) {
+            console.error('Đã xảy ra lỗi:', error);
+            showLog(`<h4>Đã xảy ra lỗi khi cập nhật trạng thái sản phẩm</h4><p>${error}</p>`);
+        });
 }

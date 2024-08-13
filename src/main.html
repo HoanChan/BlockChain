@@ -162,6 +162,9 @@
             </tr>
           </table>
           <h5 class="text-center">Nhật ký hoạt động:</h5>
+          <button type="button" class="btn btn-primary" id="btnThemTT" onclick="showCapNhat('xxx')">
+            Thêm mới
+          </button>
           <table class="table">
             <thead>
               <tr>
@@ -177,6 +180,54 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal Thêm Trạng thái sản phẩm-->
+  <div class="modal fade" id="diagThemTT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="diagThemTTLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="diagThemTTLabel">CẬP NHẬT TRẠNG THÁI CHO SẢN PHẨM <b id="diagThemTT-Id">xxx</b></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="log-tenTrangThai">Tên trạng thái</label>
+          <input type="text" class="form-control" id="log-tenTrangThai" name="log-tenTrangThai" required />
+        </div>
+        <div class="form-group">
+          <label for="log-thoiGian">Thời gian</label>
+          <input type="datetime-local" class="form-control" id="log-thoiGian" name="log-thoiGian" required value="2023-12-22 17:35:20" />
+        </div>
+        <div class="form-group">
+          <label for="log-diaDiem">Địa điểm</label>
+          <input type="text" class="form-control" id="log-diaDiem" name="log-diaDiem" required />
+        </div>
+        <div class="form-group">
+          <label for="log-loaiTrangThai">Loại trạng thái</label>
+          <select class="form-select" id="log-loaiTrangThai" name="log-loaiTrangThai" required>
+            <option value="Đang sản xuất">Đang sản xuất</option>
+            <option value="Đang vận chuyển">Đang vận chuyển</option>
+            <option value="Nhập kho">Nhập kho</option>
+            <option value="Đang trưng bày">Đang trưng bày</option>
+            <option value="Xuất kho">Xuất kho</option>
+            <option value="Đã giao hàng">Đã giao hàng</option>
+            <option value="Đã nhận hàng">Đã nhận hàng</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="log-moTaChiTiet">Mô tả chi tiết</label>
+          <input type="text" class="form-control" id="log-moTaChiTiet" name="log-moTaChiTiet" required />
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="log-btnThemTT" onclick="capNhat('xxx')">
+          Thêm mới
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- Modal Hiển thị log-->
     <div class="modal fade" id="diagLog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
