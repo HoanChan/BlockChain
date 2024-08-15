@@ -211,6 +211,8 @@ function showCapNhat(id) {
     for (const key in logProperties) {
         document.getElementById(`log-${key}`).value = '';
     }
+    // gán ngày giờ hiện tại vào ô thời gian
+    document.getElementById('log-thoiGian').value = new Date().toLocaleString('sv-SE');
     document.getElementById('log-btnThemTT').setAttribute('onclick', `capNhat('${id}')`);
     diagThemTTModal.show();
 }
@@ -228,7 +230,6 @@ async function capNhat(id) {
         .on('receipt', function (receipt) {
             console.log('Trạng thái sản phẩm đã được cập nhật:', receipt);
             showLog(`<h4>Trạng thái sản phẩm đã được cập nhật</h4><p>${jsonToHtml(receipt)}</p>`);
-            laySP();
         })
         .on('error', function (error) {
             console.error('Đã xảy ra lỗi:', error);
