@@ -64,10 +64,14 @@ contract TheoDoi {
     }
 
     function dsSP2() public view returns (chiTietSP[] memory) {
-        chiTietSP[] memory spChiTiet = new chiTietSP[](ids.length);
-        
-        for (uint i = 0; i < ids.length; i++) {
-            spChiTiet[i] = chiTietSP(ids[i], dsSanPham[ids[i]].data, lichSu[ids[i]][lichSu[ids[i]].length - 1].data);
+        chiTietSP[] memory spChiTiet = new chiTietSP[](ids.length);        
+        for (uint i = 0; i < ids.length; i++) {        
+            TrangThai[] memory ls = lichSu[ids[i]];
+            string memory status = unicode"Chưa có trạng thái";
+            if (ls.length > 0) {
+                status = ls[ls.length - 1].data;
+            }
+            spChiTiet[i] = chiTietSP(ids[i], dsSanPham[ids[i]].data, status);
         }
         
         return spChiTiet;
