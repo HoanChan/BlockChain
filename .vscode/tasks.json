@@ -27,7 +27,7 @@
 			"type": "shell",
 			"command": "npx truffle test",
 			"problemMatcher": [],
-			"label": "2. Test contracts",
+			"label": "2. Compile, Deploy, Test contracts",
 			"detail": "npx truffle test",
 			"group": {
 				"kind": "build",

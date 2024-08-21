@@ -161,12 +161,12 @@ contract("TheoDoi", (accounts) => {
     let contractInstance;
 
     before(async () => {
-        contractInstance = await TheoDoi.deployed();
-        // contractInstance = await TheoDoi.new();
+        contractInstance = await TheoDoi.deployed(); // address cố định sau khi deploy
+        // contractInstance = await TheoDoi.new(); // address mới mỗi lần deploy
     });
 
     after(() => {
-        console.log(`Địa chỉ của hợp đồng thông minh: ${contractInstance.address}`);
+        console.log(`\nĐịa chỉ của hợp đồng thông minh: ${contractInstance.address}`);
     });
 
     it(`Kiểm tra việc tạo và xem ${sampleProducts.length} sản phẩm`, async () => {
