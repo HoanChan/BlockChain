@@ -52,7 +52,7 @@ let productList = [];
 
 async function laySP() {
     try {
-        const result = await window.contract.methods.dsSP2().call();
+        const result = await window.contract.methods.dsSP().call();
         console.log('Danh sách sản phẩm:', result);
         lstProduct.innerHTML = '';
         productList = [];
