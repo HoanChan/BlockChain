@@ -31,15 +31,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('ABISignature:', ABISignature);
             const latestBlock = Number(await window.web3.eth.getBlockNumber());
             console.log('Latest block:', latestBlock);
+            let counter = latestBlock;
             for (let i = latestBlock; i >= Math.max(0, latestBlock - 1000); i--) {
                 const block = await window.web3.eth.getBlock(i, true);
                 if (block === null) {
                     console.error('Error fetching block:', i);
+                    counter--;
                     continue;
                 }
                 console.log(`Fetching block ${i}...`, block);
                 if (block.transactions === null) {
                     console.error('Error fetching transactions:', block);
+                    counter--;
                     continue;
                 }
                 block.transactions.forEach(tx => {
@@ -48,36 +51,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                     console.log('Method name:', methodName);
                     // console.log('Method data:', methodData);
                     const method = ABISignature.find(method => method.signature === methodName);    
-                    let decodedData= 'Decoding error';
-                    try {
-                        decodedData = window.web3.eth.abi.decodeParameters(
-                            ['string', 'string'], // Lấy kiểu tham số từ ABI
-                            methodData
-                        );
-                    } catch (error) {
-                        decodedData = 'Decoding error';
-                    }
-                    try{
-                        const card = document.createElement('div');
-                        card.classList.add('col');
-                        card.innerHTML = `
-                            <div class="card">
-                                <div class="card-header">
-                                    <b>Transaction</b> ${tx.hash}
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><b>From:</b> ${tx.from}</p>
-                                    <p class="card-text"><b>To:</b> ${tx.to}</p>
-                                    <p class="card-text"><b>Method:</b> ${JSON.stringify(method)}</p>
-                                    <p class="card-text"><b>Data:</b></p>
-                                    <ul><li> ${Object.values(decodedData).slice(0, -1).join('<li>')}</li></ul>
-                                </div>
+                    let decodedData = window.web3.eth.abi.decodeParameters(['string', 'string'], methodData) || ['Decoding error', ''];
+                    const card = document.createElement('div');
+                    card.classList.add('col');
+                    card.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <b>Transaction ${counter}</b> ${tx.hash}
                             </div>
-                        `;
-                        document.getElementById('transactionsContainer').appendChild(card);
-                    }catch (error) {
-                        console.error('Error:', error);
-                    }
+                            <div class="card-body">
+                                <p class="card-text"><b>From:</b> ${tx.from}</p>
+                                <p class="card-text"><b>To:</b> ${tx.to}</p>
+                                <p class="card-text"><b>Method:</b> ${JSON.stringify(method)}</p>
+                                <p class="card-text"><b>Data:</b></p>
+                                <ul><li> ${Object.values(decodedData).slice(0, -1).join('<li>')}</li></ul>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('transactionsContainer').appendChild(card);
+                    counter--;
                 });
             }
         // } catch (error) {
