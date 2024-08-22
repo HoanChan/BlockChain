@@ -41,10 +41,11 @@ async function taoSP() {
             addRawDataToProductList({ id, data: dataString });
             showLog(`<h4>Sản phẩm đã được tạo</h4><p>${jsonToHtml(receipt)}</p>`);
         })
-        .on('error', function (error) {
-            console.error('Đã xảy ra lỗi:', error);
-            showLog(`<h4>Đã xảy ra lỗi khi tạo sản phẩm</h4><p>${error}</p>`);
+        .on('error', function (error, receipt) {
+            console.error('Đã xảy ra lỗi:', error, receipt);
+            showLog(`<h4>Đã xảy ra lỗi khi tạo sản phẩm</h4><p>${error}</p><p>${jsonToHtml(receipt)}</p>`);
         });
+
 }
 
 const lstProduct = document.getElementById("product-list");
