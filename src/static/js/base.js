@@ -38,7 +38,7 @@ async function taoSP() {
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Sản phẩm đã được tạo:', receipt);
-            addRawDataToProductList({ id, data: dataString });
+            addRawDataToProductList({ id, data: dataString, status: 'Chưa có trạng thái' });
             showLog(`<h4>Sản phẩm đã được tạo</h4><p>${jsonToHtml(receipt)}</p>`);
         })
         .on('error', function (error, receipt) {
