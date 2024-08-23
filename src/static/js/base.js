@@ -23,8 +23,9 @@ const Conn2BC = async () => {
 const diagThemSPModal = new bootstrap.Modal(document.getElementById('diagThemSP'));
 const procedureProperties = { id: 'Mã số', ten: 'Tên', nhaSanXuat: 'Nhà sản xuất', loaiSanPham: 'Loại', kichThuoc: 'Kích thước', trongLuong: 'Trọng lượng', hanSuDung: 'Hạn sử dụng' };
 const procedureView = { id: 'Mã số', ten: 'Tên', nhaSanXuat: 'Nhà sản xuất', loaiSanPham: 'Loại', trangThai: 'Trạng thái' };
-// Hàm tạo sản phẩm
+
 async function taoSP() {
+    diagThemSPModal.hide();
     let data = [];
     for (const key in procedureProperties) {
         const value = document.getElementById(key).value;
@@ -39,11 +40,9 @@ async function taoSP() {
         .on('receipt', function (receipt) {
             console.log('Sản phẩm đã được tạo:', receipt);
             addRawDataToProductList({ id, data: dataString, status: 'Chưa có trạng thái' });
-            showLog(`<h4>Sản phẩm đã được tạo</h4><p>${jsonToHtml(receipt)}</p>`);
         })
         .on('error', function (error, receipt) {
             console.error('Đã xảy ra lỗi:', error, receipt);
-            showLog(`<h4>Đã xảy ra lỗi khi tạo sản phẩm</h4><p>${error}</p><p>${jsonToHtml(receipt)}</p>`);
         });
 
 }
@@ -62,7 +61,6 @@ async function laySP() {
         }
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
-        showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
     }
 }
 
@@ -91,53 +89,6 @@ function createProductItem(product) {
           </td>
         </tr>
       `;
-}
-
-function formatHash(input, maxLength = 32) {
-    // Kiểm tra độ dài của chuỗi đầu vào
-    inputString = `${input}`.trim();
-    if (inputString.length === 0) {
-        return "";
-    }
-
-    // Chia chuỗi thành các phần có độ dài maxLength ký tự
-    let formattedString = "";
-    for (let i = 0; i < inputString.length; i += maxLength) {
-        formattedString += inputString.slice(i, i + maxLength) + "<br>";
-    }
-
-    // Xóa thẻ <br> cuối cùng
-    return formattedString.slice(0, -4);
-}
-
-
-function jsonToHtml(json) {
-    let html = '<table class="table table-responsive table-bordered table-striped">';
-    html += '<thead class="thead-dark"><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
-    for (const key in json) {
-        if (json.hasOwnProperty(key)) {
-            html += `<tr><td>${key}</td><td>${formatHash(json[key])}</td></tr>`;
-        }
-    }
-    html += '</tbody></table>';
-    return html;
-}
-
-const diagLogModal = new bootstrap.Modal(document.getElementById('diagLog'));
-const diagLogModalBody = document.getElementById('diagLogBody');
-
-function showLog(logContent) {
-    const currentTime = new Date().toLocaleString();
-    const logElement = document.createElement('div');
-    logElement.classList.add('log-entry');
-    logElement.innerHTML = `
-      <hr>
-      <div class="log-time">${currentTime}</div>
-      <div class="log-content">${logContent}</div>
-    `;
-    diagLogModalBody.appendChild(logElement);
-    const diagLogModal = new bootstrap.Modal(document.getElementById('diagLog'));
-    diagLogModal.show();
 }
 
 async function readABIFromURL(url) {
@@ -185,7 +136,6 @@ async function showProcedure(id) {
         diagXemSPModal.show();
     } catch (error) {
         console.error('Đã xảy ra lỗi:', error);
-        showLog(`<h4>Đã xảy ra lỗi khi lấy danh sách sản phẩm</h4><p>${error}</p>`);
     }
 }
 
@@ -218,6 +168,7 @@ function showCapNhat(id) {
 }
 
 async function capNhat(id) {
+    diagThemTTModal.hide();
     data = [];
     for (const key in logProperties) {
         const value = document.getElementById(`log-${key}`).value;
@@ -229,10 +180,10 @@ async function capNhat(id) {
         .send({ from: window.account })
         .on('receipt', function (receipt) {
             console.log('Trạng thái sản phẩm đã được cập nhật:', receipt);
-            showLog(`<h4>Trạng thái sản phẩm đã được cập nhật</h4><p>${jsonToHtml(receipt)}</p>`);
+            diagXemSPModal.hide();
+            laySP();
         })
         .on('error', function (error) {
             console.error('Đã xảy ra lỗi:', error);
-            showLog(`<h4>Đã xảy ra lỗi khi cập nhật trạng thái sản phẩm</h4><p>${error}</p>`);
         });
 }

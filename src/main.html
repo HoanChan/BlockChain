@@ -18,7 +18,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="/show">Xem chi tiết các giao dịch</a>
-          
+
         </li>
         <a class="nav-link" href="/phanQuyen">Quản lý người dùng</a>
         </li>
@@ -118,7 +118,7 @@
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnThemSP" onclick="taoSP()">
+          <button type="button" class="btn btn-primary" id="btnThemSP" onclick="taoSP()">
             Thêm mới
           </button>
         </div>
@@ -188,66 +188,49 @@
     </div>
 
     <!-- Modal Thêm Trạng thái sản phẩm-->
-  <div class="modal fade" id="diagThemTT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="diagThemTTLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="diagThemTTLabel">CẬP NHẬT TRẠNG THÁI CHO SẢN PHẨM <b id="diagThemTT-Id">xxx</b></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="log-tenTrangThai">Tên trạng thái</label>
-          <input type="text" class="form-control" id="log-tenTrangThai" name="log-tenTrangThai" required />
-        </div>
-        <div class="form-group">
-          <label for="log-thoiGian">Thời gian</label>
-          <input type="datetime-local" class="form-control" id="log-thoiGian" name="log-thoiGian" required value="2023-12-22 17:35:20" />
-        </div>
-        <div class="form-group">
-          <label for="log-diaDiem">Địa điểm</label>
-          <input type="text" class="form-control" id="log-diaDiem" name="log-diaDiem" required />
-        </div>
-        <div class="form-group">
-          <label for="log-loaiTrangThai">Loại trạng thái</label>
-          <select class="form-select" id="log-loaiTrangThai" name="log-loaiTrangThai" required>
-            <option value="Đang sản xuất">Đang sản xuất</option>
-            <option value="Đang vận chuyển">Đang vận chuyển</option>
-            <option value="Nhập kho">Nhập kho</option>
-            <option value="Đang trưng bày">Đang trưng bày</option>
-            <option value="Xuất kho">Xuất kho</option>
-            <option value="Đã giao hàng">Đã giao hàng</option>
-            <option value="Đã nhận hàng">Đã nhận hàng</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="log-moTaChiTiet">Mô tả chi tiết</label>
-          <input type="text" class="form-control" id="log-moTaChiTiet" name="log-moTaChiTiet" required />
-        </div>
-      </div>
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="log-btnThemTT" onclick="capNhat('xxx')">
-          Thêm mới
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- Modal Hiển thị log-->
-    <div class="modal fade" id="diagLog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="diagLogLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+    <div class="modal fade" id="diagThemTT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="diagThemTTLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="diagLogLabel">Nhật ký hoạt động</h5>
+            <h5 class="modal-title" id="diagThemTTLabel">CẬP NHẬT TRẠNG THÁI CHO SẢN PHẨM <b id="diagThemTT-Id">xxx</b>
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" id="diagLogBody"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-              Close
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="log-tenTrangThai">Tên trạng thái</label>
+              <input type="text" class="form-control" id="log-tenTrangThai" name="log-tenTrangThai" required />
+            </div>
+            <div class="form-group">
+              <label for="log-thoiGian">Thời gian</label>
+              <input type="datetime-local" class="form-control" id="log-thoiGian" name="log-thoiGian" required
+                value="2023-12-22 17:35:20" />
+            </div>
+            <div class="form-group">
+              <label for="log-diaDiem">Địa điểm</label>
+              <input type="text" class="form-control" id="log-diaDiem" name="log-diaDiem" required />
+            </div>
+            <div class="form-group">
+              <label for="log-loaiTrangThai">Loại trạng thái</label>
+              <select class="form-select" id="log-loaiTrangThai" name="log-loaiTrangThai" required>
+                <option value="Đang sản xuất">Đang sản xuất</option>
+                <option value="Đang vận chuyển">Đang vận chuyển</option>
+                <option value="Nhập kho">Nhập kho</option>
+                <option value="Đang trưng bày">Đang trưng bày</option>
+                <option value="Xuất kho">Xuất kho</option>
+                <option value="Đã giao hàng">Đã giao hàng</option>
+                <option value="Đã nhận hàng">Đã nhận hàng</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="log-moTaChiTiet">Mô tả chi tiết</label>
+              <input type="text" class="form-control" id="log-moTaChiTiet" name="log-moTaChiTiet" required />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary" id="log-btnThemTT" onclick="capNhat('xxx')">
+              Thêm mới
             </button>
           </div>
         </div>
