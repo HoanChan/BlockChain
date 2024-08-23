@@ -88,7 +88,6 @@ function createProductItem(product) {
           ${properties}
           <td>
             <a href="#" class="btn btn-info" onclick="showProcedure('${product.id}')">Xem</a>
-            <a href="#" class="btn btn-warning" onclick="updateProcedure('${product.id}')">Cập nhật trạng thái</a>
           </td>
         </tr>
       `;
