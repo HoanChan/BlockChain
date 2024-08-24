@@ -50,7 +50,7 @@ Lệnh này đã được cấu hình sẵn ở `.vscode/tasks.json` nên chỉ 
 4. Copy các thông tin về network của Ganache vào file cấu hình [truffle-config.js](truffle-config.js)
 5. Tạo file [migrations/1_deploy.js](migrations/1_deploy.js) để deploy các contracts lên máy chủ `Ganache`. Trong file này chúng ta viết code để thêm dữ liệu ban đầu cho `Smart Contract` luôn.
 6. Gõ lệnh `npx truffle migrate --network development` trên terminal để biên dịch `Smart Contract`, kết quả sẽ là file tương ứng với tên contracts và được lưu trong thư mục `build\contracts` đồng thời triển khai các contracts lên máy chủ `Ganache`.
-7. Tạo file [TheoDoiSanPham.test.js](test/TheoDoiSanPham.test.js) trong thư mục test để kiểm tra các hàm trong `Smart Contract`.
+7. Tạo file [TheoDoi.test.js](test/TheoDoi.test.js) trong thư mục test để kiểm tra các hàm trong `Smart Contract`.
 8. Gõ lệnh `npx truffle test` trên terminal để chạy việc kiểm tra các hàm trong `Smart Contract`, đảm bảo các hàm hoạt động đúng như mong muốn trước khi phát triển tiếp.
 9. Tạo file [index.js](index.js) chứa thông tin máy chủ node.js
 10. Tạo file các file khác để dựng giao diện ứng dụng:
